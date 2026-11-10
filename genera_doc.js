@@ -1,5 +1,5 @@
 // Genera un documento a scorrimento (prova, soluzioni, spiegazione) da un file di contenuto: HTML con KaTeX stampato con Brave.
-// Uso: node genera_doc.js <contenuto.js> <output.pdf>
+// Uso: node genera_doc.js <contenuto.js> <output.pdf>  (es. integrali/prova.js)
 // Blocchi del contenuto:
 //   {t:"titolo", testo, sotto}            intestazione del documento
 //   {t:"sez", testo, punti?, nota?}        titolo di sezione (punti = punteggio della sezione)
@@ -89,7 +89,7 @@ async function main() {
     .replace(/url\(fonts\//g, `url(file://${KATEX_DIR}/fonts/`);
   const html = `<!doctype html><html lang="it"><head><meta charset="utf-8"><title>${doc.titolo}</title>
     <style>${katexCss}</style><style>${css}</style></head><body>${doc.blocchi.map(blocco).join("")}</body></html>`;
-  const htmlPath = path.join(__dirname, path.basename(sorgente, ".js") + ".html");
+  const htmlPath = path.join(path.dirname(path.resolve(sorgente)), path.basename(sorgente, ".js") + ".html");
   fs.writeFileSync(htmlPath, html);
 
   const profilo = fs.mkdtempSync(path.join(os.tmpdir(), "brave-pdf-"));

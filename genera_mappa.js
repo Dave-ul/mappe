@@ -1,14 +1,22 @@
 // Genera la mappa (schematica: tabelle, catene di passi, alberi; 1 foglio A4 fronte-retro, da ricopiare a mano e portare
 // all'esame) da contenuto_mappa.js, stampata con Brave via puppeteer-core.
-// Uso: node genera_mappa.js <output.pdf>
+// Uso: node genera_mappa.js <cartella dell'argomento | file di contenuto> <output.pdf>
+// (es. node genera_mappa.js integrali ~/Documenti/Mappa_integrali.pdf)
 const fs = require("fs");
 const path = require("path");
 const os = require("os");
 const katex = require("katex");
 const puppeteer = require("puppeteer-core");
-// CONTENUTO=<file.js> sceglie un altro contenuto; facciate.legenda sostituisce la legenda,
-// facciate.scala ingrandisce tutto (1.45 = corpo 12 pt, come la scrittura a mano).
-const facciate = require(path.resolve(__dirname, process.env.CONTENUTO || "contenuto_mappa.js"));
+// Nel contenuto: facciate.legenda sostituisce la legenda, facciate.scala ingrandisce tutto (1.45 = corpo 12 pt,
+// come la scrittura a mano). L'HTML va accanto al contenuto, così le immagini (img/...) si trovano.
+const [ARGOMENTO, USCITA] = process.argv.slice(2);
+if (!ARGOMENTO || !USCITA) {
+  console.error("uso: node genera_mappa.js <cartella dell'argomento | file di contenuto> <output.pdf>");
+  process.exit(2);
+}
+const CONTENUTO = fs.existsSync(ARGOMENTO) && fs.statSync(ARGOMENTO).isDirectory()
+  ? path.resolve(ARGOMENTO, "contenuto_mappa.js") : path.resolve(ARGOMENTO);
+const facciate = require(CONTENUTO);
 const SCALA = facciate.scala || 1;
 const ALTEZZA_PAGINA_MM = 284;
 
@@ -109,14 +117,13 @@ th { background: #e6e6e6; font-weight: 700; }
 `;
 
 async function main() {
-  const out = process.argv[2];
-  if (!out) throw new Error("manca il percorso del PDF di uscita");
+  const out = path.resolve(USCITA);
   const katexCss = fs.readFileSync(path.join(KATEX_DIR, "katex.min.css"), "utf8")
     .replace(/url\(fonts\//g, `url(file://${KATEX_DIR}/fonts/`);
   const html = `<!doctype html><html lang="it"><head><meta charset="utf-8">
     <style>${katexCss}</style><style>${css}</style></head>
     <body>${facciate.map(facciata).join("")}</body></html>`;
-  const htmlPath = path.join(__dirname, "mappa.html");
+  const htmlPath = path.join(path.dirname(CONTENUTO), "mappa.html");
   fs.writeFileSync(htmlPath, html);
 
   const profilo = fs.mkdtempSync(path.join(os.tmpdir(), "brave-pdf-"));
