@@ -3,6 +3,8 @@ x = symbols('x', positive=True)  # x>0 so ln|x| = ln x; abs args checked on a va
 a, k = symbols('a k', positive=True)
 f = Function('f')
 casi = [
+ ("B/(x-a)^2 [mappa]", 3/(x-2)**2, -3/(x-2)),
+ ("1/((x-h)^2+k^2) [mappa]", 1/((x-1)**2+4), atan((x-1)/2)/2),
  ("x sin x", x*sin(x), -x*cos(x)+sin(x)),
  ("x e^2x", x*exp(2*x), exp(2*x)*(x/2-Rational(1,4))),
  ("x ln x^4", x*log(x**4), x**2/2*log(x**4)-x**2),
