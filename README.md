@@ -7,6 +7,7 @@ Mappe di formule da ricopiare a mano e portare in verifica e all'esame di Stato 
 | `integrali/` | `~/Documenti/Mappa_integrali.pdf` | prova, soluzioni e spiegazione |
 | `opamp/` | `~/Documenti/Mappa_amplificatore_operazionale.pdf` | circuiti in `img/` |
 | `inglese-unit13-15/` | `~/Documenti/Mappa_inglese_unit13-15.pdf` | Electronics, Unit 13 e 15 |
+| `motore-cc/` | `~/Documenti/Mappa_motore_cc.pdf` | TPSEE, solo appunti Saber; schemi SVG in `img/`, `verifica.py` |
 
 In comune nella radice:
 
@@ -25,6 +26,7 @@ Uso:
     python3 -m venv venv && venv/bin/pip install sympy pymupdf pymongo pillow
     venv/bin/python -I integrali/verifica.py
     venv/bin/python -I opamp/verifica.py
+    venv/bin/python -I motore-cc/verifica.py
 
 Per un argomento nuovo: crea `<argomento>/contenuto_mappa.js` partendo da uno dei due e, se servono, `<argomento>/img/` e `<argomento>/verifica.py`.
 
