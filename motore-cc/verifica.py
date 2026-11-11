@@ -32,6 +32,20 @@ ok("C_r cresce -> omega cala", sp.diff(wl, Cr).is_negative)
 Vg = KE * w
 ok("versione del quaderno diversa", sp.simplify((Kme * Vg / RA - Kme * KE / RA * w) - sol[C]) != 0)
 
+# Bilancio di potenza (spiegazione): V_g*I_A = C*omega  =>  K_E = K_me
+ok("bilancio di potenza K_E = K_me", sp.simplify((KE * w * IA - Kme * IA * w).subs(Kme, KE)) == 0)
+
+# Esempi numerici della spiegazione: R_A = 2 ohm, K_E = K_me = 0,1
+num = {RA: 2, KE: sp.Rational(1, 10), Kme: sp.Rational(1, 10)}
+Cn = sol[C].subs(num)
+ok("24 V: omega0 = 240 rad/s", sp.solve(sp.Eq(Cn.subs(VA, 24), 0), w)[0] == 240)
+ok("24 V: spunto 1,2 N m", Cn.subs({VA: 24, w: 0}) == sp.Rational(12, 10))
+ok("24 V: I spunto 12 A", sol[IA].subs(num).subs({VA: 24, w: 0}) == 12)
+ok("C_r = 0,3: I_A = 3 A", sp.solve(sp.Eq(coppia.rhs.subs(num), sp.Rational(3, 10)), IA)[0] == 3)
+for v, atteso in [(24, 180), (10, 40)]:
+    ok(f"C_r = 0,3, {v} V: omega = {atteso}", wl.subs(num).subs({VA: v, Cr: sp.Rational(3, 10)}) == atteso)
+ok("2 V: spunto 0,1 < 0,3, non parte", Cn.subs({VA: 2, w: 0}) == sp.Rational(1, 10))
+
 for nome, esito in controlli:
     print(("OK  " if esito else "NO  ") + nome)
 print(f"{sum(e for _, e in controlli)}/{len(controlli)}")

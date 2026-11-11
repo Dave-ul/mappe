@@ -6,8 +6,8 @@ Mappe di formule da ricopiare a mano e portare in verifica e all'esame di Stato 
 |---|---|---|
 | `integrali/` | `~/Documenti/Mappa_integrali.pdf` | prova, soluzioni e spiegazione |
 | `opamp/` | `~/Documenti/Mappa_amplificatore_operazionale.pdf` | circuiti in `img/` |
-| `inglese-unit13-15/` | `~/Documenti/Mappa_inglese_unit13-15.pdf` | Electronics, Unit 13 e 15 |
-| `motore-cc/` | `~/Documenti/Mappa_motore_cc.pdf` | TPSEE, solo appunti Saber; schemi SVG in `img/`, `verifica.py` |
+| `inglese-unit13-15/` | `~/Documenti/Mappa_inglese_unit13-15.pdf` | Electronics, Unit 13 e 15; spiegazione |
+| `motore-cc/` | `~/Documenti/Mappa_motore_cc.pdf` | TPSEE, solo appunti Saber; spiegazione, schemi SVG in `img/`, `verifica.py` |
 
 In comune nella radice:
 
