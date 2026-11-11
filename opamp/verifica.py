@@ -54,4 +54,48 @@ ok = simplify(solve(Eq(pendenza, symbols("SR")), f)[0] - symbols("SR") / (2 * pi
 risultati.append(ok)
 print(("OK  " if ok else "NO  ") + "slew rate, f_max")
 
+# --- Spiegazione (spiegazione.js): passaggi e esempi numerici ---
+Ib, Ro, i = symbols("Ib Ro i", real=True)
+controlla("polarizzazione, formula generale", [Eq(vp, -Ib * R3), Eq(-vm / R1 + (vo - vm) / R2, Ib), opamp(vo, vp, vm)],
+          [vo, vp, vm], vo, R2 * Ib * (1 - R3 * (R1 + R2) / (R1 * R2)))
+# Strumentazione con la corrente in RG: vo2 - vo1 = (vi+ - vi-) + 4R i, i = (vi+ - vi-)/RG.
+ok = simplify((vip + 2 * R * (vip - vim) / RG) - (vim - 2 * R * (vip - vim) / RG) - (1 + 4 * R / RG) * (vip - vim)) == 0
+risultati.append(ok); print(("OK  " if ok else "NO  ") + "strumentazione, corrente in RG")
+# Resistenza d'uscita ad anello chiuso del non invertente: Ro / (1 + A beta), con A grande -> Ro (1 + R2/R1) / A.
+rout = Ro / (1 + A * R1 / (R1 + R2))
+ok = simplify(limit(rout * A, A, oo) - Ro * (1 + R2 / R1)) == 0
+risultati.append(ok); print(("OK  " if ok else "NO  ") + "R_out ad anello chiuso")
+# Sommatore non invertente a n ingressi (n = 3): media x G.
+v1, v2, v3 = symbols("v1 v2 v3", real=True)
+controlla("sommatore non invertente, 3 ingressi",
+          [Eq((v1 - vp) / R + (v2 - vp) / R + (v3 - vp) / R, 0), Eq(vm, vo * R1 / (R1 + R2)), opamp(vo, vp, vm)],
+          [vo, vp, vm], vo, (v1 + v2 + v3) / 3 * (1 + R2 / R1))
+
+
+def numero(nome, ottenuto, atteso, tolleranza=0.01):
+    ok = abs(float(ottenuto) - atteso) <= tolleranza * abs(atteso)
+    risultati.append(ok)
+    print(("OK  " if ok else "NO  ") + nome, "" if ok else f"ottenuto {float(ottenuto)}, atteso {atteso}")
+
+
+k = 1e3
+numero("zona lineare 741: 65 uV", 13 / 2e5, 65e-6)
+numero("non invertente 8/10: 1,47", 1 + 2.2 * k / (4.7 * k), 1.47)
+numero("invertente 30/9: G = -10", -100 * k / (10 * k), -10)
+numero("invertente 30/9: Vi max 1,3 V", 13 / 10, 1.3)
+numero("partitore a vuoto 6 V", 12 * 10 * k / (20 * k), 6)
+numero("partitore con carico 4 V", 12 * 5 * k / (10 * k + 5 * k), 4)
+numero("sommatore 3/10: uscita 9 V pp", 100 * k / (33 * k) * 3, 9.09)
+numero("I->V: R = 10 kOhm", 10 / 1e-3, 10e3)
+numero("V->I fuori massa: vo = 4 V", 2 / k * (k + k), 4)
+numero("V->I fuori massa: vi max 6,5 V", 13 * k / (k + k), 6.5)
+numero("V->I a massa: vo = 4 V", 4 / k * 500 * (1 + k / k), 4)
+numero("offset: 22 mV", 2e-3 * (1 + 100 * k / (10 * k)), 22e-3)
+numero("R_out 741: 4 mOhm", 75 / 2e5 * 11, 4.1e-3)
+numero("CMRR 90 dB: G_CM = 6,3", 2e5 / 10 ** (90 / 20), 6.32)
+numero("slew rate: f_max 8 kHz", 0.5e6 / (2 * pi * 10), 7.96e3)
+numero("slew rate: salto 40 us", 20 / 0.5e6, 40e-6)
+numero("GBP: f_H 5 Hz", 1e6 / 2e5, 5)
+numero("GBP: G = 100 -> 10 kHz", 1e6 / 100, 10e3)
+
 print(f"{sum(risultati)}/{len(risultati)}")

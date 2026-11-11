@@ -20,7 +20,7 @@ def color(argb):
 def render(src, out_dir):
     doc = bson.decode(pathlib.Path(src).read_bytes())
     for n, page in enumerate(doc['z']):
-        strokes = [(s, [pt for raw in s['p'] for pt in points(raw)]) for s in page['s']]
+        strokes = [(s, [pt for raw in s['p'] for pt in points(raw)]) for s in page.get('s', [])]
         max_y = max([page['h']] + [y for _, pts in strokes for _, y in pts])
         max_x = max([page['w']] + [x for _, pts in strokes for x, _ in pts])
         img = Image.new('RGB', (int(max_x * SCALE) + MARGIN, int(max_y * SCALE) + MARGIN), 'white')
