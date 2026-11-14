@@ -12,6 +12,7 @@ Mappe di formule da ricopiare a mano e portare in verifica e all'esame di Stato 
 In comune nella radice:
 
 - `genera_mappa.js`: mappa da `<argomento>/contenuto_mappa.js`, stampata in PDF con Brave (puppeteer-core). Stampa lo spazio libero di ogni facciata (se è negativo, sfora) e segnala le formule fuori dal riquadro. Il contenuto ha riquadri con righe (`b`, anche HTML come `<img>`), tabelle vedo→uso (`tab`, `intest`, `gruppi`), catene di passi (`flow`), alberi decisionali (`albero`) e righe finali (`dopo`), con formule KaTeX; `facciate.scala = 1.45` dà il corpo 12 pt.
+- `genera_mentale.js`: la stessa mappa come mappa mentale (nodo centrale, rami colorati numerati, foglie su curve; A4 orizzontale) da `<argomento>/mappa_mentale.js`; segnala ciò che esce dalla pagina o si sovrappone. Esempio: `opamp/mappa_mentale.js`.
 - `genera_doc.js`: documenti a scorrimento (prove, soluzioni, spiegazioni; blocchi descritti nell'intestazione del file).
 - `strumenti/controlla_esame.sh <file.pdf>`: parole vietate dai criteri d'esame e righe con "⇐" da guardare a mano.
 - `strumenti/togli_rif.py`: toglie i rimandi al libro da un PDF senza generatore.
