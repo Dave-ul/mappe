@@ -3,9 +3,9 @@
 from sympy import Eq, limit, oo, pi, simplify, solve, symbols, sin, diff, Abs
 
 A = symbols("A", positive=True)
-R, R1, R2, R3, R1a, R1b, RG, RL = symbols("R R1 R2 R3 R1a R1b RG RL", positive=True)
+R, R1, R2, R3, R1a, R1b, RL = symbols("R R1 R2 R3 R1a R1b RL", positive=True)
 vi, va, vb, vip, vim, v, ii, Vos, Ip, Im, VOM, f, t = symbols("vi va vb vip vim v ii Vos Ip Im VOM f t", real=True)
-vo, vm, vp, iL, vo1, vo2, vA, vB, m1, m2, p3, m3 = symbols("vo vm vp iL vo1 vo2 vA vB m1 m2 p3 m3")
+vo, vm, vp, iL, m1, m2 = symbols("vo vm vp iL m1 m2")
 
 risultati = []
 
@@ -30,13 +30,6 @@ controlla("sommatore non invertente", [Eq((va - vp) / R + (vb - vp) / R, 0), Eq(
 controlla("corrente -> tensione", [Eq(ii + (vo - vm) / R, 0), opamp(vo, 0, vm)], [vo, vm], vo, -R * ii)
 controlla("differenziale", [Eq(vp, vip * R2 / (R1 + R2)), Eq((vim - vm) / R1 + (vo - vm) / R2, 0), opamp(vo, vp, vm)],
           [vo, vp, vm], vo, R2 / R1 * (vip - vim))
-# Strumentazione: A1 ha vi- sul +, A2 ha vi+ sul +; A e B sono i - di A1 e A2, con 2R verso le uscite e RG tra A e B.
-# A3: vo1 -> R -> -, vo2 -> R -> + con R a massa, R di retroazione.
-controlla("strumentazione", [
-    opamp(vo1, vim, vA), opamp(vo2, vip, vB),
-    Eq((vo1 - vA) / (2 * R) + (vB - vA) / RG, 0), Eq((vo2 - vB) / (2 * R) + (vA - vB) / RG, 0),
-    Eq(p3, vo2 / 2), Eq((vo1 - m3) / R + (vo - m3) / R, 0), opamp(vo, p3, m3),
-], [vo1, vo2, vA, vB, p3, m3, vo], vo, (1 + 4 * R / RG) * (vip - vim))
 # V -> I fuori massa: vo -> RL -> nodo -> R1 -> massa; R2 dal nodo a v- (nessuna corrente).
 controlla("V->I fuori massa", [Eq(vm, iL * R1), Eq(vo, iL * (R1 + RL)), opamp(vo, vi, vm)], [vo, vm, iL], iL, vi / R1)
 controlla("V->I fuori massa, vo", [Eq(vm, iL * R1), Eq(vo, iL * (R1 + RL)), opamp(vo, vi, vm)], [vo, vm, iL], vo,
@@ -58,9 +51,6 @@ print(("OK  " if ok else "NO  ") + "slew rate, f_max")
 Ib, Ro, i = symbols("Ib Ro i", real=True)
 controlla("polarizzazione, formula generale", [Eq(vp, -Ib * R3), Eq(-vm / R1 + (vo - vm) / R2, Ib), opamp(vo, vp, vm)],
           [vo, vp, vm], vo, R2 * Ib * (1 - R3 * (R1 + R2) / (R1 * R2)))
-# Strumentazione con la corrente in RG: vo2 - vo1 = (vi+ - vi-) + 4R i, i = (vi+ - vi-)/RG.
-ok = simplify((vip + 2 * R * (vip - vim) / RG) - (vim - 2 * R * (vip - vim) / RG) - (1 + 4 * R / RG) * (vip - vim)) == 0
-risultati.append(ok); print(("OK  " if ok else "NO  ") + "strumentazione, corrente in RG")
 # Resistenza d'uscita ad anello chiuso del non invertente: Ro / (1 + A beta), con A grande -> Ro (1 + R2/R1) / A.
 rout = Ro / (1 + A * R1 / (R1 + R2))
 ok = simplify(limit(rout * A, A, oo) - Ro * (1 + R2 / R1)) == 0

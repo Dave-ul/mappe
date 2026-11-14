@@ -48,12 +48,8 @@ const facciate = [
           },
           { mem: true, h: "Corrente → tensione", w: 2, da: "I", b: [img("corrente_tensione", 17), "$v_o=-R\\,i_i$"] },
           {
-            mem: true, h: "Differenziale", w: 3, da: "I + N",
+            mem: true, h: "Differenziale", w: 4, da: "I + N",
             b: [img("differenziale", 21), "$v_o=\\frac{R_2}{R_1}(v_{i+}-v_{i-})$"],
-          },
-          {
-            mem: true, h: "Strumentazione", w: 3, da: "differenziale",
-            b: [img("strumentazione", 27), "$v_o=\\left(1+\\frac{4R}{R_G}\\right)(v_{i+}-v_{i-})$"],
           },
         ],
       },

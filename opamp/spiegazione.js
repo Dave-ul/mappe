@@ -46,7 +46,7 @@ module.exports = {
       "$A_{OL}=\\infty$ → qualsiasi $v_d\\neq0$ manda l'uscita in saturazione: per avere un circuito lineare serve la <b>retroazione negativa</b>",
       "$R_i=\\infty$ → gli ingressi <b>non assorbono corrente</b>",
       "$R_o=0$ → $v_o$ <b>non dipende dal carico</b> (dalla corrente che gli chiedo)",
-      "banda infinita: amplifica allo stesso modo a tutte le frequenze (nel reale no, vedi §18)",
+      "banda infinita: amplifica allo stesso modo a tutte le frequenze (nel reale no, vedi §17)",
     ] },
 
     { t: "sez", testo: "3 · Caratteristica di trasferimento (appunti del 3/10)" },
@@ -228,27 +228,7 @@ module.exports = {
     ] },
     { t: "p", testo: "<b>Caratteristiche</b>: • il libro dà $R_i=R_1+R_2$ per entrambi gli ingressi (per l'ingresso $+$ è sempre così; per il $-$ vale con i due ingressi pilotati insieme, se il $+$ è a massa il $-$ vede solo $R_1$) • se le resistenze non sono <b>uguali a coppie</b>, $v_o$ dipende anche dal valor medio degli ingressi (tensione di modo comune) • per cambiare il guadagno bisogna cambiare insieme una coppia di resistori • usi: fare la differenza tra due segnali, amplificare segnali non riferiti a massa (ponte di Wheatstone)." },
 
-    { t: "sez", testo: "11 · Amplificatore per strumentazione (differenziale a tre stadi)" },
-    { t: "due", sx: [
-      { t: "p", testo: png("strumentazione", 36) },
-      { t: "box", tipo: "memo", righe: [
-        "$$v_o=\\left(1+\\frac{4R}{R_G}\\right)(v_{i+}-v_{i-})$$",
-      ] },
-    ], dx: [
-      { t: "box", tipo: "passi", titolo: "Dimostrazione (con la corrente in $R_G$)", righe: [
-        "CCV(a) su $A_1$ e $A_2$: $v_A=v_{i-}$, $v_B=v_{i+}$",
-        "corrente in $R_G$ (da B verso A): $i=\\frac{v_{i+}-v_{i-}}{R_G}$",
-        "gli ingressi non assorbono corrente, quindi la stessa $i$ passa nelle due $2R$:",
-        "$v_{o2}=v_B+2R\\,i$, $v_{o1}=v_A-2R\\,i$",
-        "$v_{o2}-v_{o1}=(v_{i+}-v_{i-})+4R\\,i$",
-        "$=(v_{i+}-v_{i-})\\left(1+\\frac{4R}{R_G}\\right)$",
-        "$A_3$ è un differenziale con guadagno 1: $v_o=v_{o2}-v_{o1}$",
-      ] },
-      { t: "p", testo: "Il libro arriva allo stesso risultato con la sovrapposizione: $v_{o1}=\\left(1+\\frac{2R}{R_G}\\right)v_{i-}-\\frac{2R}{R_G}v_{i+}$ e, scambiando gli ingressi, $v_{o2}$." },
-    ] },
-    { t: "p", testo: "<b>Caratteristiche</b>: • $R_i=\\infty$ (i segnali entrano direttamente sui $+$ di $A_1$ e $A_2$) • il guadagno si regola con <b>una sola resistenza</b> $R_G$ • esiste integrato (INA101, INA110): resistenze interne tarate al laser, tutte alla stessa temperatura, quindi derive annullate e CMRR alto." },
-
-    { t: "sez", testo: "12 · Convertitore corrente → tensione (I→V)" },
+    { t: "sez", testo: "11 · Convertitore corrente → tensione (I→V)" },
     { t: "due", sx: [
       { t: "p", testo: png("corrente_tensione", 24) },
       { t: "box", tipo: "memo", righe: ["$$v_o=-R\\,i_i$$"] },
@@ -266,7 +246,7 @@ module.exports = {
       "l'uscita va da 0 a $-10$ V: per renderla positiva si mette dopo un invertente con $G=-1$ ($R_1=R_2=10$ kΩ)",
     ] },
 
-    { t: "sez", testo: "13 · Convertitore tensione → corrente (V→I), carico fuori massa" },
+    { t: "sez", testo: "12 · Convertitore tensione → corrente (V→I), carico fuori massa" },
     { t: "p", testo: "Un convertitore V→I fa passare nel carico una corrente <b>proporzionale alla tensione d'ingresso</b> e <b>indipendente dal carico</b>. Ne esistono due: carico fuori massa (nessun capo a massa) e carico riferito a massa." },
     { t: "due", sx: [
       { t: "p", testo: png("vi_fuori_massa", 26) },
@@ -290,7 +270,7 @@ module.exports = {
       "limite con $V_{sat}=13$ V: $|v_i|<13\\cdot\\frac{1}{2}=6{,}5$ V",
     ] },
 
-    { t: "sez", testo: "14 · Convertitore V→I con carico riferito a massa" },
+    { t: "sez", testo: "13 · Convertitore V→I con carico riferito a massa" },
     { t: "due", sx: [
       { t: "p", testo: png("vi_a_massa", 30) },
       { t: "box", tipo: "memo", righe: [
@@ -313,7 +293,7 @@ module.exports = {
       "$v_+=4\\text{ mA}\\cdot500\\ \\Omega=2$ V, $v_o=2\\cdot(1+1)=4$ V < 13 V: zona lineare",
     ] },
 
-    { t: "sez", testo: "15 · L'operazionale reale: i parametri (appunti del 19/10 e del 24/10)" },
+    { t: "sez", testo: "14 · L'operazionale reale: i parametri (appunti del 19/10 e del 24/10)" },
     { t: "p", testo: "Gli operazionali veri si avvicinano molto a quelli ideali, ma non del tutto. Questi sono i parametri che lo descrivono, con la definizione e il valore tipico." },
     { t: "tab", intest: ["parametro", "definizione", "valore tipico"], larghezze: ["20%", "56%", "24%"], righe: [
       ["$R_i$ resistenza d'ingresso differenziale", "resistenza tra i due ingressi, ad anello aperto", "alcuni MΩ (BJT), quasi ∞ (FET)"],
@@ -330,7 +310,7 @@ module.exports = {
       ["$GBP$", "prodotto guadagno × larghezza di banda, costante", "741: 1 MHz"],
     ] },
 
-    { t: "sez", testo: "16 · Gli effetti dei parametri reali" },
+    { t: "sez", testo: "15 · Gli effetti dei parametri reali" },
     { t: "due", sx: [
       { t: "box", tipo: "memo", titolo: "Offset in uscita", righe: [
         "$$V_{oo}=V_{os}\\left(1+\\frac{R_2}{R_1}\\right)$$",
@@ -365,7 +345,7 @@ module.exports = {
       { t: "p", testo: "Misura quanto l'operazionale <b>ignora</b> la parte comune ai due ingressi (il loro valor medio) e amplifica solo la differenza. Più è alto, meglio è. Esempio, 741 con 90 dB: $G_{CM}=\\frac{2\\cdot10^5}{10^{90/20}}\\approx6{,}3$." },
     ] },
 
-    { t: "sez", testo: "17 · Slew rate" },
+    { t: "sez", testo: "16 · Slew rate" },
     { t: "due", sx: [
       { t: "box", tipo: "memo", righe: [
         "$$SR=\\frac{\\Delta v_o}{\\Delta t}\\ \\to\\ SR=\\frac{dv_o}{dt}$$",
@@ -387,7 +367,7 @@ module.exports = {
       ] },
     ] },
 
-    { t: "sez", testo: "18 · Prodotto guadagno-larghezza di banda (GBP)" },
+    { t: "sez", testo: "17 · Prodotto guadagno-larghezza di banda (GBP)" },
     { t: "due", sx: [
       { t: "p", testo: png("gbp", 28) },
       { t: "box", tipo: "memo", righe: [
@@ -404,7 +384,7 @@ module.exports = {
       ] },
     ] },
 
-    { t: "sez", testo: "19 · Tutte le formule in una tabella" },
+    { t: "sez", testo: "18 · Tutte le formule in una tabella" },
     { t: "tab", intest: ["circuito", "relazione", "da ricordare"], larghezze: ["26%", "40%", "34%"], righe: [
       ["non invertente", "$G=1+\\frac{R_2}{R_1}$", "in fase, $R_i=\\infty$"],
       ["invertente", "$G=-\\frac{R_2}{R_1}$", "180°, $R_i=R_1$"],
@@ -412,7 +392,6 @@ module.exports = {
       ["sommatore invertente", "$v_o=-R_2\\left(\\frac{v_a}{R_{1a}}+\\frac{v_b}{R_{1b}}\\right)$", "somma pesata"],
       ["sommatore non invertente", "$v_o=\\frac{v_a+v_b}{2}\\left(1+\\frac{R_2}{R_1}\\right)$", "media × G"],
       ["differenziale", "$v_o=\\frac{R_2}{R_1}(v_{i+}-v_{i-})$", "resistenze uguali a coppie"],
-      ["strumentazione", "$v_o=\\left(1+\\frac{4R}{R_G}\\right)(v_{i+}-v_{i-})$", "guadagno con una sola $R_G$"],
       ["I → V", "$v_o=-R\\,i_i$", "trasduttori in corrente"],
       ["V → I fuori massa", "$i_L=\\frac{v_i}{R_1}$", "$|v_i|<V_{sat}\\frac{R_1}{R_1+R_L}$"],
       ["V → I a massa", "$i_L=\\frac{v_i-v}{R_1}$", "$R_1$ e $R_2$ uguali a coppie"],
@@ -422,7 +401,7 @@ module.exports = {
       ["GBP", "$A_{OL}f_H=Gf_{H1}=f_T$", "meno guadagno, più banda"],
     ] },
 
-    { t: "sez", testo: "20 · Domande tipiche" },
+    { t: "sez", testo: "19 · Domande tipiche" },
     { t: "tab", intest: ["domanda", "dove guardare"], larghezze: ["58%", "42%"], righe: [
       ["Cos'è un operazionale? Disegna il simbolo e di' a cosa servono i terminali", "§1"],
       ["Quali sono le caratteristiche dell'operazionale ideale?", "§2"],
@@ -434,13 +413,12 @@ module.exports = {
       ["A cosa serve il buffer?", "§7"],
       ["Dimostra il sommatore invertente / non invertente", "§8, §9"],
       ["Dimostra il differenziale; perché le resistenze vanno uguali a coppie?", "§10"],
-      ["Perché si usa l'amplificatore per strumentazione?", "§11"],
-      ["Come si trasforma una corrente in tensione e viceversa?", "§12, §13, §14"],
-      ["Cos'è la tensione di offset e come si riduce?", "§15, §16"],
-      ["Definisci slew rate, CMRR e GBP", "§15, §16, §17, §18"],
+      ["Come si trasforma una corrente in tensione e viceversa?", "§11, §12, §13"],
+      ["Cos'è la tensione di offset e come si riduce?", "§14, §15"],
+      ["Definisci slew rate, CMRR e GBP", "§14, §15, §16, §17"],
     ] },
 
-    { t: "sez", testo: "21 · Correzioni agli appunti" },
+    { t: "sez", testo: "20 · Correzioni agli appunti" },
     { t: "p", testo: "• <b>30/9</b>: sullo schema c'è ±15 V e nei dati ±12 V; l'alimentazione è una sola (±12 V o ±15 V), e $V_{sat}$ sta 1÷2 V sotto. Nel testo \"$V_{in,max}=+\\frac{V_{sat}}{A_v}$\" va con il modulo: $|V_{in,max}|=\\frac{V_{sat}}{|G|}$.<br>• <b>3/10 pt. 2</b>: nella dimostrazione del non invertente le prime righe hanno $\\frac{0-v_i}{R_2}$, ma la corrente è quella in $R_1$: $\\frac{0-v_i}{R_1}=\\frac{v_i-v_o}{R_2}$. Il risultato $1+\\frac{R_2}{R_1}$ è giusto.<br>• <b>5/10</b>: il guadagno dell'invertente è $G=-\\frac{R_2}{R_1}$, con il <b>segno meno</b>.<br>• <b>8/10</b>: nel non invertente il segnale va sul $+$ e $R_1$ va dal $-$ a massa; nel disegno sul $+$ c'è scritto $V_{CC}$, ma lì va $v_i$.<br>• <b>12/10</b>: \"Fig 36A p. 334\" non corrisponde ai parametri reali, che sono nel paragrafo 5 del capitolo (pp. 286-293).<br>• <b>19/10</b>: la formula giusta è $V_{oo}=V_{os}\\left(1+\\frac{R_2}{R_1}\\right)$, non $\\frac{R_1}{R_2}$. Il campo \"da μV a mV\" è quello di $V_{os}$, non di $V_{oo}$.<br>• <b>24/10</b>: nel \"si vuole dimostrare\" del sommatore invertente manca il segno meno: $v_o=-R_2\\left(\\frac{v_a}{R_{1a}}+\\frac{v_b}{R_{1b}}\\right)$.<br>• <b>27/10</b>: l'appunto sul sensore di temperatura (10 mV/°C, 0 °C → 0 V) si ferma a \"si vuole studiare la condizione\": va completato." },
   ],
 };

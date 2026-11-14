@@ -14,7 +14,6 @@ RITAGLI = {
     "sommatore_inv": (0, 26, 468, 138, 530),
     "sommatore_non_inv": (0, 302, 468, 418, 532),
     "differenziale": (0, 26, 607, 140, 671),
-    "strumentazione": (0, 26, 695, 205, 785),
     "vi_fuori_massa": (1, 26, 76, 138, 136),
     "vi_a_massa": (1, 302, 76, 428, 143),
     "polarizzazione": (1, 26, 342, 140, 405),
