@@ -4,10 +4,10 @@ Mappe di formule da ricopiare a mano e portare in verifica e all'esame di Stato 
 
 | Cartella | Mappa | Altro |
 |---|---|---|
-| `integrali/` | `~/Documenti/Mappa_integrali.pdf` | prova, soluzioni e spiegazione |
-| `opamp/` | `~/Documenti/Mappa_amplificatore_operazionale.pdf` | spiegazione, circuiti in `img/` |
-| `inglese-unit13-15/` | `~/Documenti/Mappa_inglese_unit13-15.pdf` | Electronics, Unit 13 e 15; spiegazione |
-| `tpsee/` | `~/Documenti/Mappa_TPSEE.pdf` | TPSEE (motore in c.c., basi, passo-passo, acquisizione), solo appunti Saber; spiegazione, schemi SVG in `img/`, `verifica.py` |
+| `integrali/` | `~/Documenti/Scuola/Mappe/Mappa_integrali.pdf` | prova, soluzioni e spiegazione |
+| `opamp/` | `~/Documenti/Scuola/Mappe/Mappa_amplificatore_operazionale.pdf` | spiegazione, circuiti in `img/` |
+| `inglese-unit13-15/` | `~/Documenti/Scuola/Mappe/Mappa_inglese_unit13-15.pdf` | Electronics, Unit 13 e 15; spiegazione |
+| `tpsee/` | `~/Documenti/Scuola/Mappe/Mappa_TPSEE.pdf` | TPSEE (motore in c.c., basi, passo-passo, acquisizione), solo appunti Saber; spiegazione, schemi SVG in `img/`, `verifica.py` |
 
 In comune nella radice:
 
@@ -21,9 +21,9 @@ In comune nella radice:
 Uso:
 
     npm install
-    node genera_mappa.js integrali ~/Documenti/Mappa_integrali.pdf
-    node genera_mappa.js opamp ~/Documenti/Mappa_amplificatore_operazionale.pdf
-    strumenti/controlla_esame.sh ~/Documenti/Mappa_*.pdf
+    node genera_mappa.js integrali ~/Documenti/Scuola/Mappe/Mappa_integrali.pdf
+    node genera_mappa.js opamp ~/Documenti/Scuola/Mappe/Mappa_amplificatore_operazionale.pdf
+    strumenti/controlla_esame.sh ~/Documenti/Scuola/Mappe/Mappa_*.pdf
     python3 -m venv venv && venv/bin/pip install sympy pymupdf pymongo pillow
     venv/bin/python -I integrali/verifica.py
     venv/bin/python -I opamp/verifica.py

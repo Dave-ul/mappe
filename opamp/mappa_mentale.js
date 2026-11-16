@@ -1,6 +1,6 @@
 // Mappa mentale sull'amplificatore operazionale: stessi contenuti di contenuto_mappa.js, disposti come mappa mentale
 // (nodo centrale, rami numerati in senso orario, foglie). A4 orizzontale fronte-retro, da ricopiare a mano.
-// Generatore: node genera_mentale.js opamp ~/Documenti/Mappa_mentale_amplificatore_operazionale.pdf
+// Generatore: node genera_mentale.js opamp ~/Documenti/Scuola/Mappe/Mappa_mentale_amplificatore_operazionale.pdf
 // I rami derivati stanno come foglie del ramo da cui vengono (Buffer sotto N, sommatore invertente sotto I...).
 
 const COLORI = ["#3d64d8", "#1597d8", "#19a9ab", "#2e9e3a", "#6a9f12", "#d9701a"];

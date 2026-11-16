@@ -1,7 +1,7 @@
 // Genera la mappa (schematica: tabelle, catene di passi, alberi; 1 foglio A4 fronte-retro, da ricopiare a mano e portare
 // all'esame) da contenuto_mappa.js, stampata con Brave via puppeteer-core.
 // Uso: node genera_mappa.js <cartella dell'argomento | file di contenuto> <output.pdf>
-// (es. node genera_mappa.js integrali ~/Documenti/Mappa_integrali.pdf)
+// (es. node genera_mappa.js integrali ~/Documenti/Scuola/Mappe/Mappa_integrali.pdf)
 const fs = require("fs");
 const path = require("path");
 const os = require("os");
