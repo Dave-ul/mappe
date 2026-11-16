@@ -63,7 +63,7 @@ function riquadro(b) {
     b.albero ? `<div class="albero">${ramo(b.albero)}</div>` : "",
     b.dopo ? `<div class="corpo">${b.dopo.map(riga).join("")}</div>` : "",
   ].join("");
-  return `<div class="${classi}" style="grid-column: span ${b.w}"><h3><span>${tex(b.h)}</span></h3>${da}${parti}</div>`;
+  return `<div class="${classi}" style="grid-column: ${b.col ? `${b.col} / ` : ""}span ${b.w}"><h3><span>${tex(b.h)}</span></h3>${da}${parti}</div>`;
 }
 
 function facciata(f, i) {

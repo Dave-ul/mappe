@@ -1,7 +1,7 @@
 // Mappa sull'amplificatore operazionale: 1 foglio A4 fronte-retro, da ricopiare a mano e portare in verifica e all'esame.
 // Criteri nella skill mappe-studio: niente dimostrazioni, esempi svolti, rimandi al libro o al quaderno; stesso bordo.
 // Circuiti ritagliati dalla vecchia mappa con strumenti/ritaglia_circuiti.py (cartella img/).
-// Riquadro: h = titolo, da = collegamento (⇐), w = colonne su 6; b = righe, flow = catena di passi, dopo = righe finali.
+// Riquadro: h = titolo, da = collegamento (⇐), w = colonne su 6, col = colonna di partenza (facoltativa); b = righe, flow = catena di passi, dopo = righe finali.
 
 const img = (nome, alto) => `<img src="img/${nome}.png" style="height:${alto}mm">`;
 
@@ -48,7 +48,7 @@ const facciate = [
           },
           { mem: true, h: "Corrente → tensione", w: 2, da: "I", b: [img("corrente_tensione", 17), "$v_o=-R\\,i_i$"] },
           {
-            mem: true, h: "Differenziale", w: 4, da: "I + N",
+            mem: true, h: "Differenziale", w: 4, col: 2, da: "I + N",
             b: [img("differenziale", 21), "$v_o=\\frac{R_2}{R_1}(v_{i+}-v_{i-})$"],
           },
         ],
