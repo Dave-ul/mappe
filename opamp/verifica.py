@@ -3,8 +3,8 @@
 from sympy import Eq, limit, oo, pi, simplify, solve, symbols, sin, diff, Abs
 
 A = symbols("A", positive=True)
-R, R1, R2, R3, R1a, R1b, RL = symbols("R R1 R2 R3 R1a R1b RL", positive=True)
-vi, va, vb, vip, vim, v, ii, Vos, Ip, Im, VOM, f, t = symbols("vi va vb vip vim v ii Vos Ip Im VOM f t", real=True)
+R, R1, R2, R1a, R1b, RL = symbols("R R1 R2 R1a R1b RL", positive=True)
+vi, va, vb, vip, vim, v, ii, Vos, VOM, f, t = symbols("vi va vb vip vim v ii Vos VOM f t", real=True)
 vo, vm, vp, iL, m1, m2 = symbols("vo vm vp iL m1 m2")
 
 risultati = []
@@ -40,17 +40,13 @@ controlla("V->I a massa", howland, [vo, vm, vp, iL], iL, (vi - v) / R1)
 controlla("V->I a massa, C a massa", [e.subs(v, 0) for e in howland], [vo, vm, vp, iL], iL, vi / R1)
 controlla("V->I a massa, vo", [e.subs(v, 0) for e in howland], [vo, vm, vp, iL], vo, vi / R1 * RL * (1 + R2 / R1))
 controlla("offset", [Eq(vm, vo * R1 / (R1 + R2)), opamp(vo, Vos, vm)], [vo, vm], vo, Vos * (1 + R2 / R1))
-bias = [Eq(vp, -Ip * R3), Eq(-vm / R1 + (vo - vm) / R2, Im), opamp(vo, vp, vm)]
-controlla("polarizzazione, R3 = R1 || R2", [e.subs(R3, R1 * R2 / (R1 + R2)) for e in bias], [vo, vp, vm], vo, R2 * (Im - Ip))
 pendenza = diff(VOM * sin(2 * pi * f * t), t).subs(t, 0)
 ok = simplify(solve(Eq(pendenza, symbols("SR")), f)[0] - symbols("SR") / (2 * pi * VOM)) == 0
 risultati.append(ok)
 print(("OK  " if ok else "NO  ") + "slew rate, f_max")
 
 # --- Spiegazione (spiegazione.js): passaggi e esempi numerici ---
-Ib, Ro, i = symbols("Ib Ro i", real=True)
-controlla("polarizzazione, formula generale", [Eq(vp, -Ib * R3), Eq(-vm / R1 + (vo - vm) / R2, Ib), opamp(vo, vp, vm)],
-          [vo, vp, vm], vo, R2 * Ib * (1 - R3 * (R1 + R2) / (R1 * R2)))
+Ro, i = symbols("Ro i", real=True)
 # Resistenza d'uscita ad anello chiuso del non invertente: Ro / (1 + A beta), con A grande -> Ro (1 + R2/R1) / A.
 rout = Ro / (1 + A * R1 / (R1 + R2))
 ok = simplify(limit(rout * A, A, oo) - Ro * (1 + R2 / R1)) == 0
@@ -87,5 +83,24 @@ numero("slew rate: f_max 8 kHz", 0.5e6 / (2 * pi * 10), 7.96e3)
 numero("slew rate: salto 40 us", 20 / 0.5e6, 40e-6)
 numero("GBP: f_H 5 Hz", 1e6 / 2e5, 5)
 numero("GBP: G = 100 -> 10 kHz", 1e6 / 100, 10e3)
+# Esempi aggiunti nella versione semplice (2026-11-16).
+numero("Ohm: 10 V su 5 kOhm = 2 mA", 10 / (5 * k), 2e-3)
+numero("partitore 12 V: 4 V su 10 kOhm", 12 * 10 / 30, 4)
+numero("partitore 12 V: 8 V su 20 kOhm", 12 * 20 / 30, 8)
+numero("1 mV x 2e5 = 200 V", 2e5 * 1e-3, 200)
+numero("altalena invertente: -2 V", -2 * k / k * 1, -2)
+numero("altalena non invertente: 3 V", (1 + 2 * k / k) * 1, 3)
+numero("equilibrio R1 = R2: vo = 2 V", (1 + 1) * 1, 2)
+numero("CCV 741: vd = 50 uV", 10 / 2e5, 50e-6)
+numero("non invertente: i = 50 uA", 0.5 / (10 * k), 50e-6)
+numero("non invertente: vo = 5 V", 0.5 + 50e-6 * 90 * k, 5)
+numero("non invertente: G = 10", 1 + 90 / 10, 10)
+numero("invertente: vo = -5 V", 0 - 0.5 / (10 * k) * 100 * k, -5)
+numero("invertente 30/9: taglio a 15 V", 10 * 1.5, 15)
+numero("sommatore: vo = -1,5 V", -(1 / (10 * k) + 0.5 / (10 * k)) * 10 * k, -1.5)
+numero("sommatore non invertente: vo = 4 V", (1 + 3) / 2 * (1 + 10 / 10), 4)
+numero("differenziale: vo = 1 V", 50 / 10 * (1.2 - 1), 1)
+numero("I->V: 0,5 mA -> -5 V", -10 * k * 0.5e-3, -5)
+numero("V->I fuori massa, RL = 3 kOhm: vo = 8 V", 2 / k * (3 * k + k), 8)
 
 print(f"{sum(risultati)}/{len(risultati)}")

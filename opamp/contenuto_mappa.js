@@ -75,19 +75,15 @@ const facciate = [
         titolo: "4. Operazionale reale",
         box: [
           {
-            mem: true, h: "Offset", w: 3, da: "N",
+            mem: true, h: "Offset", w: 2, da: "N",
             b: ["$V_{oo}=V_{os}\\left(1+\\frac{R_2}{R_1}\\right)$", "si riduce limitando $\\frac{R_2}{R_1}$", "$V_{os}$: da μV a qualche mV"],
           },
           {
-            mem: true, h: "Slew rate", w: 3,
+            mem: true, h: "Slew rate", w: 2,
             b: ["$SR=\\frac{\\Delta V_o}{\\Delta t}$ [V/μs]", "$f_{max}=\\frac{SR}{2\\pi V_{OM}}$, oltre: distorce"],
           },
           {
-            mem: true, h: "Correnti di polarizzazione", w: 3, da: "I",
-            b: [img("polarizzazione", 24), "$R_3=R_1\\parallel R_2$ annulla $I_{bias}$", "resta $|V_{oo}|=I_{os}R_2$"],
-          },
-          {
-            mem: true, h: "Guadagno-banda", w: 3,
+            mem: true, h: "Guadagno-banda", w: 2,
             b: [img("gbp", 24), "$A_{OL}f_H=G_1f_{H1}=f_T$", "meno guadagno, più banda"],
           },
         ],

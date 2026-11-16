@@ -5,7 +5,7 @@
 //   {t:"sez", testo, punti?, nota?}        titolo di sezione (punti = punteggio della sezione)
 //   {t:"p", testo}                         paragrafo
 //   {t:"es", righe:[[n, testo], ...], col?} esercizi numerati, in griglia (col = colonne, default 2)
-//   {t:"box", titolo?, righe:[], tipo?}    riquadro: tipo "memo" (bordo spesso), "occhio" (attenzione), "passi"
+//   {t:"box", titolo?, righe:[], tipo?}    riquadro: tipo "memo" (bordo spesso), "occhio" (attenzione), "passi", "facile" (giallo: detto semplice)
 //   {t:"sol", n, righe:[]}                 soluzione svolta di un esercizio
 //   {t:"tab", righe:[[...]], intest?:[], larghezze?:["30%",...]}   tabella
 //   {t:"due", sx:[blocchi], dx:[blocchi]}  due colonne di blocchi
@@ -67,6 +67,7 @@ p { margin: 1mm 0; }
 .box.memo { border-width: 2.4px; }
 .box.occhio { border-style: dashed; border-width: 1.6px; }
 .box.passi { background: #f2f2f2; }
+.box.facile { background: #fff6d5; border-color: #c9a227; }
 .sol { display: flex; gap: 2mm; border-bottom: 1px dotted #888; padding: 1mm 0 1.4mm; break-inside: avoid; }
 .riga { margin: 0.5mm 0; }
 .riga.cont { padding-left: 6mm; }

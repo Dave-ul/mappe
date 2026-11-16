@@ -83,17 +83,10 @@ const facciate = [
         ],
       },
       {
-        n: 6, h: "Guadagno-banda", lato: "sx", colore: COLORI[5], img: "gbp", alto: 23,
+        n: 5, h: "Guadagno-banda", lato: "sx", colore: COLORI[4], img: "gbp", alto: 23,
         foglie: [
           { t: "$A_{OL}f_H=G_1f_{H1}=f_T$" },
           { t: "meno guadagno, più banda" },
-        ],
-      },
-      {
-        n: 5, h: "Correnti di polarizzazione", lato: "sx", colore: COLORI[4], da: "I", img: "polarizzazione", alto: 23,
-        foglie: [
-          { t: "$R_3=R_1\\parallel R_2$ annulla $I_{bias}$" },
-          { t: "resta $|V_{oo}|=I_{os}R_2$" },
         ],
       },
       {

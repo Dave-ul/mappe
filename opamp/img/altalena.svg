@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 540 262" font-family="Noto Sans, sans-serif" font-size="12">
+  <!-- Paragone dell'altalena: tensione lungo la catena R1-R2 (stessa corrente, quindi una retta).
+       Asse orizzontale = resistenza percorsa (R2 = 2 R1), asse verticale = tensione (1 V = 30 px).
+       Sinistra: invertente, vi = 1 V, perno a 0 V tra R1 e R2, vo = -2 V.
+       Destra: non invertente, perno a massa all'inizio di R1, v- = vi = 1 V, vo = 3 V. -->
+  <g fill="#111" font-weight="700" font-size="13">
+    <text x="20" y="18">Invertente: perno in mezzo</text>
+    <text x="290" y="18">Non invertente: perno in fondo</text>
+  </g>
+  <g transform="translate(0,22)">
+  <g stroke="#888" stroke-width="1" stroke-dasharray="4 3" fill="none">
+    <line x1="20" y1="125" x2="255" y2="125"/>
+    <line x1="290" y1="125" x2="525" y2="125"/>
+    <line x1="40" y1="95" x2="40" y2="215"/>
+    <line x1="100" y1="125" x2="100" y2="215"/>
+    <line x1="220" y1="125" x2="220" y2="215"/>
+    <line x1="310" y1="125" x2="310" y2="215"/>
+    <line x1="370" y1="95" x2="370" y2="215"/>
+    <line x1="490" y1="35" x2="490" y2="215"/>
+  </g>
+  <g fill="#666" font-size="10">
+    <text x="190" y="120">0 V (massa)</text>
+    <text x="392" y="140">0 V (massa)</text>
+  </g>
+  <!-- aste -->
+  <g stroke="#111" stroke-width="4" stroke-linecap="round">
+    <line x1="40" y1="95" x2="220" y2="185"/>
+    <line x1="310" y1="125" x2="490" y2="35"/>
+  </g>
+  <!-- perni -->
+  <g fill="#3d64d8">
+    <path d="M100 125 L90 145 L110 145 Z"/>
+    <path d="M310 125 L300 145 L320 145 Z"/>
+  </g>
+  <g fill="#111">
+    <circle cx="40" cy="95" r="4"/><circle cx="220" cy="185" r="4"/>
+    <circle cx="370" cy="95" r="4"/><circle cx="490" cy="35" r="4"/>
+  </g>
+  <!-- etichette tensioni -->
+  <g fill="#111">
+    <text x="12" y="85">v<tspan font-size="9" dy="3">i</tspan><tspan dy="-3"> = +1 V</tspan></text>
+    <text x="150" y="205">v<tspan font-size="9" dy="3">o</tspan><tspan dy="-3"> = −2 V</tspan></text>
+    <text x="18" y="165" fill="#3d64d8">v<tspan font-size="9" dy="3">−</tspan><tspan dy="-3"> = 0 V fisso</tspan></text>
+    <text x="318" y="160" fill="#3d64d8">massa</text>
+    <text x="296" y="70">v<tspan font-size="9" dy="3">−</tspan><tspan dy="-3"> = v</tspan><tspan font-size="9" dy="3">i</tspan><tspan dy="-3"> = 1 V</tspan></text>
+    <text x="400" y="22">v<tspan font-size="9" dy="3">o</tspan><tspan dy="-3"> = +3 V</tspan></text>
+  </g>
+  <!-- bracci = resistenze -->
+  <g stroke="#111" stroke-width="1.4">
+    <line x1="40" y1="222" x2="100" y2="222"/><line x1="100" y1="222" x2="220" y2="222"/>
+    <line x1="310" y1="222" x2="370" y2="222"/><line x1="370" y1="222" x2="490" y2="222"/>
+  </g>
+  <g fill="#111" font-weight="700">
+    <text x="58" y="237">R<tspan font-size="9" dy="3">1</tspan></text>
+    <text x="150" y="237">R<tspan font-size="9" dy="3">2</tspan><tspan dy="-3" font-weight="400"> = 2R</tspan><tspan font-size="9" dy="3" font-weight="400">1</tspan></text>
+    <text x="328" y="237">R<tspan font-size="9" dy="3">1</tspan></text>
+    <text x="420" y="237">R<tspan font-size="9" dy="3">2</tspan><tspan dy="-3" font-weight="400"> = 2R</tspan><tspan font-size="9" dy="3" font-weight="400">1</tspan></text>
+  </g>
+  </g>
+</svg>
