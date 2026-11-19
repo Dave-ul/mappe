@@ -8,7 +8,7 @@ Mappe di formule da ricopiare a mano e portare in verifica e all'esame di Stato 
 | `opamp/` | `~/Documenti/Scuola/Mappe/Mappa_amplificatore_operazionale.pdf` | spiegazione, circuiti in `img/` |
 | `inglese-unit13-15/` | `~/Documenti/Scuola/Mappe/Mappa_inglese_unit13-15.pdf` | Electronics, Unit 13 e 15; spiegazione |
 | `tpsee/` | `~/Documenti/Scuola/Mappe/Mappa_TPSEE.pdf` | TPSEE (motore in c.c., basi, passo-passo, acquisizione), solo appunti Saber; spiegazione, schemi SVG in `img/`, `verifica.py` |
-| `laboratorio/` | `~/Documenti/Scuola/Mappe/Mappa_laboratorio_elettronica.pdf` | laboratorio di elettronica dal quaderno (foto) e dalle slide del prof; schemi SVG in `img/`, `verifica.py` |
+| `laboratorio/` | `~/Documenti/Scuola/Mappe/Mappa_laboratorio_elettronica.pdf` | laboratorio di elettronica dal quaderno (foto) e dalle slide del prof; spiegazione, schemi SVG in `img/` (amplificatori da `disegna_circuiti.py`), `verifica.py` |
 
 In comune nella radice:
 

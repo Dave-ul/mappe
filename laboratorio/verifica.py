@@ -82,6 +82,36 @@ Vcc, VL, IL = sp.symbols("V_CC V_LED I_LED", positive=True)
 R = sp.solve(sp.Eq(Vcc, VL + x * IL), x)[0]
 ok("LED R = (Vcc - VLED)/ILED", sp.simplify(R - (Vcc - VL) / IL) == 0)
 
+# Esempi numerici della spiegazione
+def vicino(a, b, tol=0.01):
+    return abs(float(a) - float(b)) <= tol
+
+
+ok("es. LED: (15-2)/700 = 18,6 mA", vicino(13 / 700 * 1000, 18.6, 0.05))
+ok("es. sfasamento 3 ms su 20 ms = 54 gradi", 360 * 3 / 20 == 54)
+ok("es. Veff di 10 Vpp = 3,54 V", vicino(5 / 2 ** 0.5, 3.54))
+ok("es. invertente -100k/10k = -10", -100 / 10 == -10)
+ok("es. invertente Vin,max = 11/10 = 1,1 V", vicino(11 / 10, 1.1))
+E12_k = [v / 10 for v in E12] + [10]
+ok("es. Av 10 con Ri = 1k: Rf = 9k -> E12 8,2k", min(E12_k, key=lambda v: abs(v - 9)) == 8.2)
+ok("es. Av con 8,2k/1k = 9,2", vicino(1 + 8.2 / 1, 9.2))
+ok("es. slide non invertente 1 + 2,2/4,7 = 1,468", vicino(1 + 2.2 / 4.7, 1.468, 0.001))
+ok("es. inseguitore 5/10k, 5/1k, 5/100", (5 / 10, 5 / 1, 5 / 0.1) == (0.5, 5, 50))
+ok("es. sommatore 100/33 = 3,03", vicino(100 / 33, 3.03))
+ok("es. sommatore 3,03 * (2 + 1) Vpp = 9,1 Vpp", vicino(100 / 33 * 3, 9.09))
+ok("es. combinatore Rf = 30k -> 30k, 10k, 15k", (30 / 1, 30 / 3, 30 / 2) == (30, 10, 15))
+ok("es. differenziale slide 1M/470k = 2,13", vicino(1000 / 470, 2.13))
+ok("es. differenziale opposti: 2,13 * 2 Vpp = 4,26 Vpp", vicino(1000 / 470 * 2, 4.26))
+ok("es. Multisim 20k/1k * 250 mV = 5 V", 20 / 1 * 0.25 == 5)
+av15 = 1 + 15 / 1.8
+ok("es. LM35 Av con 15k/1,8k = 9,33", vicino(av15, 9.33))
+ok("es. LM35 a 50 °C esce 4,67 V", vicino(0.5 * av15, 4.67))
+ok("es. LM35 Vin,max = 13,8/9,33 = 1,48 V", vicino(13.8 / av15, 1.48))
+ok("es. LM35 Tmax = 148 °C", vicino(13.8 / av15 / 0.01, 148, 0.5))
+ok("es. umidita' estremi -5 e +5", (4 * (1.5 - 2.75), 4 * (4 - 2.75)) == (-5, 5))
+ok("es. umidita' 50k/12,5k = 4", 50 / 12.5 == 4)
+ok("es. umidita' con E12 47k/12k = 3,92 -> +-4,9 V", vicino(47 / 12, 3.92) and vicino(47 / 12 * 1.25, 4.9, 0.02))
+
 falliti = [n for n, c in controlli if not c]
 print(f"{len(controlli) - len(falliti)}/{len(controlli)}")
 for n in falliti:
