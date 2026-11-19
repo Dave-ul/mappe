@@ -152,6 +152,7 @@ async function main() {
     if (larghe.length) console.error("ATTENZIONE formule fuori dal riquadro:\n" + larghe.join("\n"));
     await page.pdf({ path: out, format: "A4", printBackground: true, preferCSSPageSize: true });
     console.log("PDF scritto:", out);
+    console.log("Copia su Saber: venv/bin/python -I strumenti/saber.py aggiorna");
   } finally {
     await browser.close();
     fs.rmSync(profilo, { recursive: true, force: true });

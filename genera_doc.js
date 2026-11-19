@@ -118,6 +118,7 @@ async function main() {
       displayHeaderFooter: true, headerTemplate: "<span></span>",
       footerTemplate: `<div style="font-size:8px;width:100%;text-align:center;color:#555">${doc.titolo} · <span class="pageNumber"></span>/<span class="totalPages"></span></div>` });
     console.log("PDF scritto:", out);
+    console.log("Copia su Saber: venv/bin/python -I strumenti/saber.py aggiorna");
   } finally {
     await browser.close();
     fs.rmSync(profilo, { recursive: true, force: true });

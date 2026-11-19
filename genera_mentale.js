@@ -179,6 +179,7 @@ async function main() {
     if (errori.length) console.error("ATTENZIONE:\n" + errori.join("\n"));
     await page.pdf({ path: out, printBackground: true, preferCSSPageSize: true });
     console.log("PDF scritto:", out);
+    console.log("Copia su Saber: venv/bin/python -I strumenti/saber.py aggiorna");
   } finally {
     await browser.close();
     fs.rmSync(profilo, { recursive: true, force: true });

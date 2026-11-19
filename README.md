@@ -18,6 +18,7 @@ In comune nella radice:
 - `strumenti/controlla_esame.sh <file.pdf>`: parole vietate dai criteri d'esame e righe con "⇐" da guardare a mano.
 - `strumenti/togli_rif.py`: toglie i rimandi al libro da un PDF senza generatore.
 - `strumenti/render_saber.py`: converte le note Saber `.sbn2` (BSON) in PNG.
+- `strumenti/saber.py`: tiene le note Saber allineate ai PDF. `saber.tsv` associa ogni PDF di `~/Documenti/Scuola/Mappe` alla sua nota (`Materia/AA-MM-GG Materia - Titolo`) e allo sha256 caricato l'ultima volta. `stato` dice cosa è cambiato o manca; `aggiorna` carica i PDF cambiati con la procedura della skill `note-saber` (Saber chiuso, sync prima e dopo, rifiuto se la nota ha tratti a mano, backup in `~/Documenti/Backup/saber-<data>-mappe`); `aggiungi <pdf> <nota>` mette un PDF nuovo nell'elenco. Test: `venv/bin/python -I strumenti/test_saber.py`.
 
 Uso:
 
@@ -30,6 +31,8 @@ Uso:
     venv/bin/python -I opamp/verifica.py
     venv/bin/python -I tpsee/verifica.py
     venv/bin/python -I laboratorio/verifica.py
+    venv/bin/python -I strumenti/saber.py stato
+    venv/bin/python -I strumenti/saber.py aggiorna
 
 Per un argomento nuovo: crea `<argomento>/contenuto_mappa.js` partendo da uno dei due e, se servono, `<argomento>/img/` e `<argomento>/verifica.py`.
 
