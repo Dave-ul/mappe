@@ -67,12 +67,26 @@ CASI = [
     ("S delta=0", (x + 1)/(x - 1)**2, log(x - 1) - 2/(x - 1), 3),
     ("S delta<0", (2*x + 6)/(x**2 + 2*x + 2), log(x**2 + 2*x + 2) + 4*atan(x + 1), 2),
     ("S tan", tan(x), -log(cos(x)), Rational(1, 2)),
+    # Spiegazione del 2026-11-20: esercizi di classe dell'11/11, 18/11 e 19/11 ed esempi nuovi
+    ("S 1/x^2", 1/x**2, -1/x, 2),
+    ("S 1/sqrt x", 1/sqrt(x), 2*sqrt(x), 2),
+    ("S sqrt x", sqrt(x), Rational(2, 3)*sqrt(x**3), 2),
+    ("S (x^2+1)/x", (x**2 + 1)/x, x**2/2 + log(x), 2),
+    ("S 6^x/2^(x+1)", 6**x/2**(x + 1) + 2*exp(x), 3**x/(2*log(3)) + 2*exp(x), 2),
+    ("S x sqrt(x^2+9)", x*sqrt(x**2 + 9), sqrt((x**2 + 9)**3)/3, 2),
+    ("S ln x^2", log(x**2), x*log(x**2) - 2*x, 2),
+    ("S x/cos^2", x/cos(x)**2, x*tan(x) + log(cos(x)), Rational(1, 2)),
+    ("S x^2 e^x", x**2*exp(x), exp(x)*(x**2 - 2*x + 2), 2),
+    ("S e^x sin", exp(x)*sin(x), exp(x)*(sin(x) - cos(x))/2, 2),
+    ("S sost x-2", (x - 2)/sqrt(x + 3), Rational(2, 3)*sqrt((x + 3)**3) - 10*sqrt(x + 3), 2),
+    ("S 1/(x(x+2))", 1/(x*(x + 2)), log(x)/2 - log(x + 2)/2, 2),
 ]
 
 # Problemi con condizioni: (nome, funzione trovata, derivata attesa, [(punto, valore atteso)])
 CONDIZIONI = [
     ("G1", x**3 - 2*x**2 + x + 5, 3*x**2 - 4*x + 1, [(1, 5)]),
     ("G3", log(x) + 2, 1/x, [(exp(1), 3)]),
+    ("S P(-2;1)", -2*x**2 + 9, -4*x, [(-2, 1)]),
 ]
 
 

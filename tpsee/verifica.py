@@ -72,6 +72,14 @@ ok("LED 5 V, 2 V, 20 mA: 150 Ω", Rled.subs({V: 5, VAK: 2, IL: sp.Rational(20, k
 # Corrente come flusso di carica: 1 A = 1 C/s ≈ 6,24e18 elettroni al secondo
 ok("1 C / 1,602e-19 C ≈ 6,24e18 elettroni", abs(1 / 1.602e-19 - 6.24e18) / 6.24e18 < 1e-3)
 
+# Formule inverse (spiegazione 2026-11-20, nota Motore cc del 12/11 p. 6): X*Y = Z -> Y = Z/X
+ok("inversa: I_A = C/K_me", sp.solve(coppia.subs(C, Cr), IA)[0] == Cr / Kme)
+ok("inversa: omega = (V_A - R_A I_A)/K_E", sp.simplify(sp.solve(maglia, w)[0] - (VA - RA * IA) / KE) == 0)
+ok("inversa: R = V/I", sp.solve(sp.Eq(V, R1 * I), R1)[0] == V / I)
+# Partitore passo per passo a 10 V: 1 mA, 3 V e 7 V, somma 10 V
+sub10 = {V: 10, R1: 3 * k, R2: 7 * k}
+ok("10 V: V_R1 = 3 V, V_R2 = 7 V, somma 10", (R1 * Is).subs(sub10) == 3 and (R2 * Is).subs(sub10) == 7)
+
 for nome, esito in controlli:
     print(("OK  " if esito else "NO  ") + nome)
 print(f"{sum(e for _, e in controlli)}/{len(controlli)}")
