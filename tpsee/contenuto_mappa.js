@@ -1,5 +1,6 @@
 // Mappa di TPSEE: 1 foglio A4 fronte-retro, da ricopiare a mano. Fronte: motore in c.c.; retro: basi, passo-passo, acquisizione.
-// Fonte: tutti gli appunti Saber di TPSEE tranne Impianti Civili (28/9, 3/10, lavagna 3/11, 4/11, 5/11, 10/11, 11/11).
+// Fonte: tutti gli appunti Saber di TPSEE tranne Impianti Civili (28/9, 3/10, lavagna 3/11, 4/11, 5/11, 10/11, 11/11);
+// dal 2026-11-22 il motore usa la notazione del libro (pp. 286-288, foto in "5E collab"): V_g alimentazione, e = k_e·ω f.c.e.m.
 // Formule verificate con verifica.py. Criteri della skill mappe-studio; formato dei riquadri: vedi integrali/contenuto_mappa.js.
 
 const img = (nome, alto) => `<img src="img/${nome}.svg" style="height:${alto}mm">`;
@@ -17,7 +18,7 @@ const facciate = [
               "$C=F\\cdot d$ &nbsp; [N·m]",
               "magnete + rotore",
               "campi magnetici $\\to$ coppia",
-              "$V_A$ [V], $I_A$ [A], $\\omega$ [rad/s]",
+              "$\\omega$ [rad/s] $=\\frac{2\\pi n}{60}$, $n$ [giri/min]",
             ],
           },
           {
@@ -27,15 +28,15 @@ const facciate = [
           {
             mem: true, h: "Equazioni", w: 6,
             b: [
-              "$V_A-R_AI_A-L_A\\frac{dI_A}{dt}-K_E\\,\\omega=0$",
-              "$C_{me}=K_{me}\\,I_A$ &nbsp;&nbsp; $V_g=K_E\\,\\omega$ (f.c.e.m.)",
+              "$V_g-R\\,I-L\\frac{dI}{dt}-k_e\\,\\omega=0$",
+              "$C_{me}=k_{me}\\,I$ &nbsp;&nbsp; $e=k_e\\,\\omega$ (f.c.e.m.)",
             ],
           },
           {
             mem: true, h: "Regime stazionario", w: 6, da: "equazioni",
             b: [
-              "$\\omega$ costante $\\to$ $L_A\\frac{dI_A}{dt}=0$",
-              "$I_A=\\frac{V_A-K_E\\,\\omega}{R_A}$",
+              "$I$, $\\omega$ costanti $\\to$ $L\\frac{dI}{dt}=0$",
+              "$I=\\frac{V_g-k_e\\,\\omega}{R}$",
             ],
           },
         ],
@@ -44,9 +45,9 @@ const facciate = [
         titolo: "2. Caratteristica meccanica",
         box: [
           {
-            mem: true, h: "Retta $C_{me}(\\omega)$", w: 3, da: "regime, $C_{me}=K_{me}I_A$",
+            mem: true, h: "Retta $C_{me}(\\omega)$", w: 3, da: "regime, $C_{me}=k_{me}I$",
             b: [
-              "$C_{me}=\\frac{K_{me}V_A}{R_A}-\\frac{K_{me}K_E}{R_A}\\,\\omega$",
+              "$C_{me}=\\frac{k_{me}V_g}{R}-\\frac{k_{me}k_e}{R}\\,\\omega$",
               "rette parallele, scendono",
             ],
           },
@@ -58,12 +59,12 @@ const facciate = [
             mem: true, h: "Vedo → succede", w: 6,
             intest: ["vedo", "succede"],
             tab: [
-              ["$\\omega=0$ (spunto)", "$C=\\frac{K_{me}V_A}{R_A}$, $I_A=\\frac{V_A}{R_A}$ massima"],
-              ["$C_{me}=0$ (a vuoto)", "$\\omega_0=\\frac{V_A}{K_E}$"],
-              ["$C_{me}=C_r$ (carico)", "$I_A=\\frac{C_r}{K_{me}}$, $\\omega=\\frac{V_A-R_AI_A}{K_E}$"],
-              ["$V_A$ aumenta", "retta più in alto, $\\omega$ aumenta"],
-              ["$C_r$ aumenta", "$\\omega$ cala, $I_A$ aumenta"],
-              ["$C_r>$ coppia di spunto", "il motore non parte"],
+              ["$\\omega=0$ (spunto)", "$C_{meMax}=\\frac{k_{me}V_g}{R}$, $I=\\frac{V_g}{R}$ max"],
+              ["$C_{me}=0$ (a vuoto)", "$\\omega_{Max}=\\frac{V_g}{k_e}$"],
+              ["$C_{me}=C_{res}$ (carico)", "$I=\\frac{C_{res}}{k_{me}}$, $\\omega^*=\\frac{V_g-RI}{k_e}$"],
+              ["$V_g$ aumenta", "retta più in alto, $\\omega$ aumenta"],
+              ["$C_{res}$ aumenta", "$\\omega$ cala, $I$ aumenta"],
+              ["$C_{res}>C_{meMax}$", "il motore non parte"],
             ],
           },
         ],

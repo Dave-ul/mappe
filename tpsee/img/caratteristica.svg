@@ -11,9 +11,9 @@
   <g fill="#000"><circle cx="57.3" cy="115" r="3.5"/><circle cx="120.9" cy="115" r="3.5"/><circle cx="202.7" cy="115" r="3.5"/></g>
   <text x="2" y="20">C<tspan font-size="10" dy="4">me</tspan></text>
   <text x="300" y="166">ω</text>
-  <text x="302" y="110">C<tspan font-size="10" dy="4">r</tspan></text>
+  <text x="296" y="110">C<tspan font-size="10" dy="4">res</tspan></text>
   <text x="124" y="146" font-size="11">2 V</text>
   <text x="188" y="146" font-size="11">10 V</text>
   <text x="268" y="146" font-size="11">24 V</text>
-  <text x="250" y="40" font-size="11">V<tspan font-size="9" dy="3">A</tspan><tspan dy="-3"> ↑</tspan></text>
+  <text x="250" y="40" font-size="11">V<tspan font-size="9" dy="3">g</tspan><tspan dy="-3"> ↑</tspan></text>
 </svg>
