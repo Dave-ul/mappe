@@ -199,6 +199,16 @@ class Saber(unittest.TestCase):
         self.assertNotEqual(self.lancia("aggiungi", "Manca.pdf", "Elettronica/x").returncode, 0)
         self.assertNotEqual(self.lancia("aggiungi", "Mappa_prova.pdf", "../fuori").returncode, 0)
 
+    def test_aggiungi_percorso_assoluto_salva_il_nome(self):
+        pdf(self.pdf_dir / "Mappa_prova.pdf", 1)
+        self.elenca()
+        esito = self.lancia("aggiungi", str(self.pdf_dir / "Mappa_prova.pdf"), NOTA)
+        self.assertEqual(esito.returncode, 0, esito.stderr)
+        self.assertIn(f"\nMappa_prova.pdf\t{NOTA}\t\n", self.elenco.read_text())
+        altro = Path(tempfile.mkdtemp()) / "Fuori.pdf"
+        pdf(altro, 1)
+        self.assertNotEqual(self.lancia("aggiungi", str(altro), "Elettronica/y").returncode, 0, "pdf fuori dalla cartella")
+
 
 if __name__ == "__main__":
     unittest.main()

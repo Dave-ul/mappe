@@ -244,6 +244,11 @@ def aggiorna():
 
 def aggiungi(pdf, nota):
     voci = leggi_elenco()
+    percorso = Path(pdf)
+    if percorso.is_absolute():
+        if percorso.resolve().parent != PDF_DIR.resolve():
+            raise Errore(f"{pdf} non è in {PDF_DIR}")
+        pdf = percorso.name
     if not (PDF_DIR / pdf).is_file():
         raise Errore(f"non trovo {PDF_DIR / pdf}")
     file_nota(nota)
