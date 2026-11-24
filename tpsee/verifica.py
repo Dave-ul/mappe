@@ -1,4 +1,5 @@
-"""Verifica con sympy le formule della mappa di TPSEE: motore in c.c. (regime stazionario) e basi (Ohm, partitore, LED)."""
+"""Verifica con sympy le formule del primo foglio di TPSEE (motore in c.c. a regime e dinamico, esercizi p. 289)
+e le basi (Ohm, partitore, LED) usate solo nella spiegazione."""
 import sympy as sp
 
 VA, RA, IA, KE, Kme, w, C, Cr = sp.symbols("V_A R_A I_A K_E K_me omega C C_r", positive=True)
@@ -79,6 +80,50 @@ ok("inversa: R = V/I", sp.solve(sp.Eq(V, R1 * I), R1)[0] == V / I)
 # Partitore passo per passo a 10 V: 1 mA, 3 V e 7 V, somma 10 V
 sub10 = {V: 10, R1: 3 * k, R2: 7 * k}
 ok("10 V: V_R1 = 3 V, V_R2 = 7 V, somma 10", (R1 * Is).subs(sub10) == 3 and (R2 * Is).subs(sub10) == 7)
+
+def vicino(a, b, tol=5e-3):
+    return abs(float(a) - float(b)) <= tol * max(1, abs(float(b)))
+
+
+# --- Motore in c.c. dinamico ---
+s = sp.symbols("s")
+R, L, ke, kme, katt, J = sp.symbols("R L k_e k_me k_att J", positive=True)
+Vg, I, W, Cres = sp.symbols("V_g I omega C_res")
+el = sp.Eq(Vg - R * I - s * L * I - ke * W, 0)
+mec = sp.Eq(kme * I - Cres - katt * W - s * J * W, 0)
+sol = sp.solve([el, mec], [I, W], dict=True)[0]
+ok("I(s) = (V_g - k_e w)/(R + sL)", sp.simplify(sp.solve(el, I)[0] - (Vg - ke * W) / (R + s * L)) == 0)
+ok("w(s) = (k_me I - C_res)/(k_att + sJ)", sp.simplify(sp.solve(mec, W)[0] - (kme * I - Cres) / (katt + s * J)) == 0)
+G = sp.simplify(sol[W].subs(Cres, 0) / Vg)
+ok("w/V_g = k_me/((R+sL)(k_att+sJ)+k_e k_me)", sp.simplify(G - kme / ((R + s * L) * (katt + s * J) + ke * kme)) == 0)
+ok("denominatore di grado 2 in s", sp.degree(sp.denom(sp.together(G)), s) == 2)
+# a regime (s = 0) e senza attrito: w = V_g/k_e, come a vuoto nel foglio 1
+ok("s=0, k_att=0: w = V_g/k_e", sp.simplify(G.subs({s: 0, katt: 0}) * Vg - Vg / ke) == 0)
+# regime del modello completo: I = (V_g - k_e w)/R, coppia motrice = C_res + k_att w
+ok("s=0: I = (V_g - k_e w)/R", sp.simplify(sp.solve(el.subs(s, 0), I)[0] - (Vg - ke * W) / R) == 0)
+
+# es. 1 p. 289: R = 4, 24 V; bloccato 2 Nm e 4 A; libero 1200 giri/min e 0,2 A
+k_me1 = sp.Rational(2) / 4
+ok("es. 1: k_me = 0,5 Nm/A", k_me1 == sp.Rational(1, 2))
+Catt1 = k_me1 * sp.Rational(2, 10)
+ok("es. 1: C_att = 0,1 Nm", Catt1 == sp.Rational(1, 10))
+ok("es. 1: k_att = 8,33e-5 Nm/(giri/min)", vicino(Catt1 / 1200, 8.333e-5, 1e-3))
+e1 = 24 - 4 * sp.Rational(2, 10)
+ok("es. 1: e = 23,2 V", e1 == sp.Rational(232, 10))
+ok("es. 1: k_e = 0,0193 V/(giri/min)", vicino(e1 / 1200, 0.01933, 1e-3))
+# es. 2 p. 289 (soluzione nella spiegazione): 24 V, R = 5; bloccato 10 Nm; 500 giri/min -> 0,5 Nm; C_res = 4 Nm
+I_bl = sp.Rational(24, 5)
+k_me2 = 10 / I_bl
+ok("es. 2: I bloccato 4,8 A, k_me = 2,083", I_bl == sp.Rational(24, 5) and vicino(k_me2, 2.0833, 1e-3))
+pend = (10 - sp.Rational(1, 2)) / 500
+ok("es. 2: pendenza 0,019 Nm/(giri/min)", pend == sp.Rational(19, 1000))
+n2 = (10 - 4) / pend
+ok("es. 2: n = 315,8 giri/min", vicino(n2, 315.8, 1e-3))
+I2 = 4 / k_me2
+ok("es. 2: I = 1,92 A", vicino(I2, 1.92, 1e-3))
+k_e2 = pend * 5 / k_me2
+ok("es. 2: k_e = 0,0456 V/(giri/min)", vicino(k_e2, 0.0456, 1e-3))
+ok("es. 2: controllo con la maglia I = (24 - k_e n)/R", vicino((24 - k_e2 * n2) / 5, I2, 1e-6))
 
 for nome, esito in controlli:
     print(("OK  " if esito else "NO  ") + nome)

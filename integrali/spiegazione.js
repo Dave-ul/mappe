@@ -1,6 +1,6 @@
-// Spiegazione degli integrali indefiniti (libro cap. 22 pp. 1234-1253, quaderno Saber dal 12/10 al 19/11).
+// Spiegazione degli integrali indefiniti (libro cap. 22 pp. 1234-1253, quaderno Saber dal 12/10 al 23/11, lavagna del 18/11 dalla chiavetta).
 // Dal 2026-11-20 scritta in modo semplicissimo, come quella dell'op-amp: basi all'inizio, riquadri gialli
-// "Detto semplice", ragionamento passo per passo, esempi presi dagli esercizi fatti in classe (11/11, 18/11, 19/11)
+// "Detto semplice", ragionamento passo per passo, esempi presi dagli esercizi fatti in classe (11/11, 18/11, 19/11, 23/11)
 // e correzioni agli appunti. Ogni esempio svolto è controllato da verifica_prova.py (casi "S ...").
 const facile = (righe, titolo = "Detto semplice") => ({ t: "box", tipo: "facile", titolo, righe });
 
@@ -8,7 +8,7 @@ module.exports = {
   titolo: "Integrali indefiniti",
   blocchi: [
     { t: "titolo", testo: "Integrali indefiniti, spiegati semplice",
-      sotto: "Matematica · dal libro (cap. 22) e dagli appunti dal 12/10 al 19/11 · giallo = detto semplice, per capire · bordo spesso = da sapere a memoria" },
+      sotto: "Matematica · dal libro (cap. 22) e dagli appunti dal 12/10 al 23/11 · giallo = detto semplice, per capire · bordo spesso = da sapere a memoria" },
     { t: "p", testo: "Come leggerla: prima il riquadro <b>giallo</b>, che spiega l'idea con un paragone; poi le formule nel riquadro a <b>bordo spesso</b>, che vanno sapute; poi gli <b>esempi</b> svolti passo per passo. Molti esempi sono gli esercizi fatti in classe, già corretti: gli errori trovati negli appunti sono nell'ultima sezione." },
 
     { t: "sez", testo: "1 · Prima di cominciare: quello che serve sapere" },
@@ -168,6 +168,17 @@ module.exports = {
         "$\\int\\frac{x}{\\cos^2x}dx$: derivo $x\\to1$, integro $\\frac1{\\cos^2x}\\to\\tan x$",
         "$=x\\tan x-\\int\\tan x\\,dx=x\\tan x+\\ln|\\cos x|+c$",
       ] },
+      { t: "box", titolo: "Dalla lavagna del 18/11", righe: [
+        "$\\int\\ln(x^2+1)\\,dx$: derivo $\\ln(x^2+1)$,",
+        "che diventa $\\frac{2x}{x^2+1}$, e integro $1\\to x$",
+        "$=x\\ln(x^2+1)-2\\int\\frac{x^2}{x^2+1}dx$",
+        "trucco: $x^2=(x^2+1)-1$",
+        "$=x\\ln(x^2+1)-2\\int\\left(1-\\frac{1}{x^2+1}\\right)dx$",
+        "$=x\\ln(x^2+1)-2x+2\\arctan x+c$",
+        "$\\int\\frac{x+2}{e^x}dx=\\int(x+2)\\,e^{-x}dx$: derivo $x+2\\to1$, integro $e^{-x}\\to-e^{-x}$",
+        "$=-(x+2)e^{-x}+\\int e^{-x}dx$",
+        "$=-(x+2)e^{-x}-e^{-x}=-\\frac{x+3}{e^x}+c$",
+      ] },
       { t: "p", testo: "Sul quaderno del 18/11 c'è scritto $\\int\\frac{x}{\\cos x}dx$: così non si risolve con i metodi del programma. Quasi sicuramente è $\\frac{x}{\\cos^2x}$: controlla sul libro o sulla scheda." },
     ] },
 
@@ -196,6 +207,13 @@ module.exports = {
         "4. $=\\frac23\\sqrt{(x+3)^3}-10\\sqrt{x+3}+c$",
       ] },
       { t: "p", testo: "Il $t$ sotto e il $2t$ di $dx$ si semplificano: succede spesso, ed è il motivo per cui la sostituzione funziona." },
+      { t: "box", titolo: "Dalla lavagna del 18/11: radice di $8-x$", righe: [
+        "$\\int\\frac{3x}{\\sqrt{8-x}}dx$: $\\sqrt{8-x}=t$, $x=8-t^2$,",
+        "$dx=-2t\\,dt$ (occhio al <b>meno</b>)",
+        "$\\int\\frac{3(8-t^2)}{t}\\cdot(-2t)\\,dt=-6\\int(8-t^2)\\,dt$",
+        "$=-48t+2t^3$",
+        "$=-48\\sqrt{8-x}+2(8-x)\\sqrt{8-x}+c$",
+      ] },
     ] },
 
     { t: "sez", testo: "7 · Funzioni razionali fratte $\\frac{N(x)}{D(x)}$" },
@@ -222,6 +240,34 @@ module.exports = {
         "$x=0$: $1=2A$, $A=\\frac12$; $\\ x=-2$: $1=-2B$, $B=-\\frac12$",
         "$\\int\\frac{dx}{x(x+2)}=\\frac12\\ln|x|-\\frac12\\ln|x+2|+c$",
       ] },
+    ] },
+    { t: "p", testo: "<b>Gli esercizi del 23/11</b>: denominatore di 2° grado e numeratore di grado al massimo 1, un esercizio per ogni caso di $\\Delta$ (teoria a p. 1247 del libro)." },
+    { t: "due", sx: [
+      { t: "box", titolo: "$\\Delta>0$: $\\int\\frac{5x-1}{x^2-x-2}dx$", righe: [
+        "1. $x^2-x-2=0$: $\\Delta=9$, radici $2$ e $-1$, quindi $(x-2)(x+1)$",
+        "2. $5x-1=A(x+1)+B(x-2)$",
+        "3. $x=2$: $9=3A$, $A=3$; $\\ x=-1$: $-6=-3B$, $B=2$",
+        "4. $=3\\ln|x-2|+2\\ln|x+1|+c$",
+      ] },
+      { t: "box", titolo: "$\\Delta=0$: $\\int\\frac{2x-3}{x^2-4x+4}dx$", righe: [
+        "1. $x^2-4x+4=(x-2)^2$",
+        "2. scrivo il numeratore con $x-2$: $2x-3=2(x-2)+1$",
+        "3. $\\int\\left(\\frac{2}{x-2}+\\frac{1}{(x-2)^2}\\right)dx$",
+        "4. $=2\\ln|x-2|-\\frac{1}{x-2}+c$",
+      ] },
+    ], dx: [
+      { t: "box", titolo: "$\\Delta<0$: $\\int\\frac{2x}{x^2+4x+5}dx$", righe: [
+        "1. $\\Delta=16-20<0$: non si scompone. $D'=2x+4$",
+        "2. faccio comparire $D'$: $2x=(2x+4)-4$",
+        "3. $\\int\\frac{2x+4}{x^2+4x+5}dx-4\\int\\frac{dx}{(x+2)^2+1}$ (quadrato completato)",
+        "4. $=\\ln(x^2+4x+5)-4\\arctan(x+2)+c$",
+      ] },
+      { t: "box", titolo: "Compito: p. 1277 n. 508, $\\int\\frac{3x-5}{x^2-2x-3}dx$", righe: [
+        "$x^2-2x-3=(x-3)(x+1)$; $\\ 3x-5=A(x+1)+B(x-3)$",
+        "$x=3$: $A=1$; $\\ x=-1$: $B=2$",
+        "$=\\ln|x-3|+2\\ln|x+1|+c$ (come il risultato del libro)",
+      ] },
+      facile(["Il modulo nel $\\ln$ serve quando l'argomento può essere negativo; $x^2+4x+5$ è sempre positivo ($\\Delta<0$), quindi lì il modulo non serve."], "Occhio"),
     ] },
 
     { t: "sez", testo: "8 · Trovare $c$ con una condizione" },
@@ -284,6 +330,6 @@ module.exports = {
     ] },
 
     { t: "sez", testo: "11 · Correzioni agli appunti" },
-    { t: "p", testo: "• <b>12/10</b>: \"$\\alpha\\neq1$\" va scritto $\\alpha\\neq-1$; e la linearità è $\\int k\\,f(x)\\,dx=k\\int f(x)\\,dx$, non \"$\\int Kx\\,dx=K\\int x^{\\alpha}dx$\".<br>• <b>28/10</b>, $\\int x\\,e^{2x}dx$: nel secondo integrale $e^{2x}$ integrato dà $\\frac{e^{2x}}{2}$, non $e^{2x}$.<br>• <b>11/11</b>, $\\int(\\sqrt x+\\frac1{x^2})$: l'esercizio si ferma a $\\frac{x^{3/2}}{3/2}$; manca il secondo pezzo, $-\\frac1x$, e il $+c$. Anche in $3\\sin x-2e^x+4\\arctan x$ manca il $+c$.<br>• <b>18/11</b>: $\\int\\frac{x}{\\cos x}dx$ non si fa con i metodi del programma; probabilmente è $\\frac{x}{\\cos^2x}$. Nell'esercizio della primitiva per $P(-2;1)$ non vanno scritti gli estremi sull'integrale.<br>• <b>19/11</b>, $\\int\\frac1{x^2}dx$: non è $\\ln\\frac{x^3}{3}$ ma $-\\frac1x+c$.<br>• <b>19/11</b>, $\\int\\left(\\frac{6^x}{2^{x+1}}+2e^x\\right)dx$: $6^x$ non è $2\\cdot3x$ ma $2^x\\cdot3^x$, e un prodotto non si integra pezzo per pezzo. Risultato: $\\frac{3^x}{2\\ln3}+2e^x+c$. Se invece il testo era $6x$ (senza esponente), serve il metodo per parti.<br>• <b>19/11</b>, $\\int x\\sqrt{x^2+9}\\,dx$: manca il $\\frac12$ del trucco della costante; il risultato è $\\frac13\\sqrt{(x^2+9)^3}+c$, non $\\frac23$. In $\\frac{x^2}{2}+\\ln(x)$ manca il modulo: $\\ln|x|$." },
+    { t: "p", testo: "• <b>12/10</b>: \"$\\alpha\\neq1$\" va scritto $\\alpha\\neq-1$; e la linearità è $\\int k\\,f(x)\\,dx=k\\int f(x)\\,dx$, non \"$\\int Kx\\,dx=K\\int x^{\\alpha}dx$\".<br>• <b>28/10</b>, $\\int x\\,e^{2x}dx$: nel secondo integrale $e^{2x}$ integrato dà $\\frac{e^{2x}}{2}$, non $e^{2x}$.<br>• <b>11/11</b>, $\\int(\\sqrt x+\\frac1{x^2})$: l'esercizio si ferma a $\\frac{x^{3/2}}{3/2}$; manca il secondo pezzo, $-\\frac1x$, e il $+c$. Anche in $3\\sin x-2e^x+4\\arctan x$ manca il $+c$.<br>• <b>18/11</b>: $\\int\\frac{x}{\\cos x}dx$ non si fa con i metodi del programma; probabilmente è $\\frac{x}{\\cos^2x}$. Anche sulla lavagna del 18/11 è scritto $\\frac{x}{\\cos x}$, quindi l'errore è del testo dato in classe: chiedi al prof. Nell'esercizio della primitiva per $P(-2;1)$ non vanno scritti gli estremi sull'integrale.<br>• <b>19/11</b>, $\\int\\frac1{x^2}dx$: non è $\\ln\\frac{x^3}{3}$ ma $-\\frac1x+c$.<br>• <b>19/11</b>, $\\int\\left(\\frac{6^x}{2^{x+1}}+2e^x\\right)dx$: $6^x$ non è $2\\cdot3x$ ma $2^x\\cdot3^x$, e un prodotto non si integra pezzo per pezzo. Risultato: $\\frac{3^x}{2\\ln3}+2e^x+c$. Se invece il testo era $6x$ (senza esponente), serve il metodo per parti.<br>• <b>19/11</b>, $\\int x\\sqrt{x^2+9}\\,dx$: manca il $\\frac12$ del trucco della costante; il risultato è $\\frac13\\sqrt{(x^2+9)^3}+c$, non $\\frac23$. In $\\frac{x^2}{2}+\\ln(x)$ manca il modulo: $\\ln|x|$.<br>• <b>Lavagna del 18/11</b>, $\\int(x+2)e^{-x}dx$: con $g=-e^{-x}$ il secondo pezzo è $-\\int(-e^{-x})\\cdot1\\,dx=+\\int e^{-x}dx$, non $-\\int e^{-x}dx$. Il risultato finale $-\\frac{x+3}{e^x}+c$ è comunque giusto." },
   ],
 };

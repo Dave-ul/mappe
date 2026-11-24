@@ -1,6 +1,7 @@
-// Mappa di TPSEE, secondo foglio: A4 fronte-retro, da ricopiare a mano. Fronte: encoder; retro: motore in c.c. dinamico.
-// Fonti: foto del libro nella cartella di classe "5E collab" (Drive, 19/11): encoder pp. 79-83 (Sezione 1, UDA 2),
-// motore in c.c. pp. 286-289 (UDA 5). Negli appunti Saber non ci sono: tutto dal libro.
+// Mappa di TPSEE, secondo foglio: A4 fronte-retro, da ricopiare a mano. Fronte: encoder; retro: passo-passo, acquisizione, SCR.
+// Fonti: encoder dalle foto del libro nella cartella di classe "5E collab" (Drive, 19/11), pp. 79-83 (Sezione 1, UDA 2);
+// passo-passo e acquisizione dagli appunti Saber del 28/9, 3/10 e 5/11 (+ datasheet L297/L298); SCR dalla nota Saber del 24/11
+// e dalla lavagna del 24/11 (chiavetta, pp. 3 e 5-8: le altre pagine sono di altre classi); I_H dal datasheet.
 // Formule verificate con verifica.py. Criteri della skill mappe-studio; formato dei riquadri: vedi integrali/contenuto_mappa.js.
 
 const img = (nome, alto) => `<img src="img/${nome}.svg" style="height:${alto}mm">`;
@@ -10,7 +11,7 @@ const facciate = [
     titolo: "TPSEE · encoder",
     sezioni: [
       {
-        titolo: "6. Encoder: trasduttore di posizione angolare, uscita digitale",
+        titolo: "5. Encoder: trasduttore di posizione angolare, uscita digitale",
         box: [
           {
             mem: true, h: "Principio", w: 3,
@@ -36,7 +37,7 @@ const facciate = [
         ],
       },
       {
-        titolo: "7. Formule",
+        titolo: "6. Formule",
         box: [
           {
             mem: true, h: "Angolo", w: 3,
@@ -65,7 +66,7 @@ const facciate = [
         ],
       },
       {
-        titolo: "8. Verso di rotazione (incrementale)",
+        titolo: "7. Verso di rotazione (incrementale)",
         box: [
           {
             mem: true, h: "Fasi, senso orario", w: 3,
@@ -80,53 +81,76 @@ const facciate = [
     ],
   },
   {
-    titolo: "TPSEE · motore in c.c. dinamico",
+    titolo: "TPSEE · passo-passo, acquisizione, SCR",
     sezioni: [
       {
-        titolo: "9. Modello completo",
+        titolo: "8. Motore passo-passo con L297 e L298",
         box: [
           {
-            mem: true, h: "Elettrico e meccanico", w: 6, da: "circuito di armatura",
-            b: [
-              "$V_g-R\\,I-L\\frac{dI}{dt}-k_e\\,\\omega=0$",
-              "$k_{me}I-C_{res}-k_{att}\\,\\omega-J\\frac{d\\omega}{dt}=0$",
-              "$J\\frac{d\\omega}{dt}$ inerzia: contro $C_{me}$ in accelerazione, 0 a $\\omega$ costante",
+            mem: true, h: "Catena", w: 6,
+            flow: ["L297: sequenza delle fasi", "L298: doppio ponte H (potenza)", "motore passo-passo"],
+            dopo: ["L297: CLOCK = 1 passo · CW/CCW = verso · HALF/FULL"],
+          },
+          {
+            mem: true, h: "L298, ponte A", w: 4,
+            intest: ["ENA", "IN1", "IN2", "motore"],
+            tab: [
+              ["0", "X", "X", "off, libero"],
+              ["1", "0", "0", "fermo, frenato"],
+              ["1", "0", "1", "gira ↻"],
+              ["1", "1", "0", "gira ↺"],
+              ["1", "1", "1", "fermo, frenato"],
             ],
           },
           {
-            mem: true, h: "Con Laplace", w: 6,
-            b: [
-              "$V_g(s)-R\\,I(s)-sL\\,I(s)-k_e\\,\\omega(s)=0$",
-              "$k_{me}I(s)-C_{res}(s)-k_{att}\\,\\omega(s)-sJ\\,\\omega(s)=0$",
-              "$I(s)=\\frac{V_g-k_e\\,\\omega(s)}{R+sL}$ &nbsp;&nbsp; $\\omega(s)=\\frac{k_{me}I-C_{res}}{k_{att}+sJ}$",
-            ],
-          },
-          {
-            mem: true, h: "Schema a blocchi: ingresso $V_g$, uscita $\\omega$", w: 6,
-            b: [img("blocchi", 22)],
-            dopo: ["con $C_{res}=0$: $\\frac{\\omega}{V_g}=\\frac{k_{me}}{(R+sL)(k_{att}+sJ)+k_ek_{me}}$ &nbsp; ⇐ 2° ordine"],
+            mem: true, h: "Uscite", w: 2,
+            b: ["OUT1 pin 2", "OUT2 pin 3", "2 LED opposti: si accende quello del verso"],
           },
         ],
       },
       {
-        titolo: "10. Collaudo e funzionamento",
+        titolo: "9. Acquisizione di un segnale",
         box: [
           {
-            mem: true, h: "Vedo → ricavo", w: 6,
-            intest: ["vedo", "ricavo"],
-            tab: [
-              ["rotore bloccato ($\\omega=0$)", "$e=0$, $C_{att}=0$ → $k_{me}=\\frac{C_{meMax}}{I}$"],
-              ["rotore libero ($C_{res}=0$)", "$C_{me}=C_{att}=k_{att}\\,\\omega$ → $k_{att}=\\frac{k_{me}I}{\\omega}$"],
-              ["$V_g$, $R$, $I$, $\\omega$", "$e=V_g-RI$ → $k_e=\\frac{e}{\\omega}$"],
-              ["velocità $n$ in giri/min", "$k_e=\\frac{e}{n}$, $k_{att}=\\frac{C_{att}}{n}$"],
+            mem: true, h: "Catena", w: 6,
+            flow: ["sensore", "condizionamento: amplifica, filtra, offset", "convertitore A/D"],
+          },
+        ],
+      },
+      {
+        titolo: "10. SCR (tiristore): diodo controllato",
+        box: [
+          {
+            mem: true, h: "Schema", w: 3,
+            b: [img("scr", 28)],
+          },
+          {
+            mem: true, h: "Vedo → succede", w: 3,
+            b: [
+              "$V_{AK}>0$ + impulso su G → conduce A → K",
+              "acceso: resta acceso anche senza G",
+              "$I_A<I_H$ (mantenimento) → si spegne",
+              "$V_{AK}<0$ → non conduce",
             ],
           },
           {
-            mem: true, h: "Motore e generatore", w: 6,
+            mem: true, h: "Interruttore", w: 3,
             b: [
-              "$C_{me}$ e $\\omega$ concordi: motore; discordi: generatore (freno)",
-              "generatore: dinamo, energia meccanica → elettrica",
+              "ON $V_{AK}\\approx0$, OFF $I_{AK}\\approx0$ → $P=V_{AK}I_{AK}\\approx0$",
+              "commutazione: $V$ e $I$ insieme → picco di $P$",
             ],
+          },
+          {
+            mem: true, h: "Rete", w: 3,
+            b: [
+              "$V_{eff}=\\frac{V_{Max}}{\\sqrt2}\\approx0{,}707\\,V_{Max}$",
+              "220 V → $V_{Max}\\approx311$ V; 50 Hz → $T=20$ ms",
+            ],
+          },
+          {
+            mem: true, h: "In alternata: conduce dall'impulso a fine semionda +", w: 6,
+            b: [img("scr_ca", 26)],
+            dopo: ["impulso in ritardo ($\\alpha$ grande) → meno tensione sul carico $R_L$"],
           },
         ],
       },

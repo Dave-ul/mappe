@@ -1,8 +1,7 @@
-// Mappa di TPSEE: 1 foglio A4 fronte-retro, da ricopiare a mano. Fronte: motore in c.c.; retro: basi, passo-passo, acquisizione.
-// Fonte: tutti gli appunti Saber di TPSEE tranne Impianti Civili (28/9, 3/10, lavagna 3/11, 4/11, 5/11, 10/11, 11/11);
-// dal 2026-11-22 il motore usa la notazione del libro (pp. 286-288, foto in "5E collab"): V_g alimentazione, e = k_e·ω f.c.e.m.
+// Mappa di TPSEE, primo foglio: A4 fronte-retro, da ricopiare a mano. Fronte: motore in c.c. a regime; retro: motore in c.c. dinamico.
+// Fonti: appunti Saber del 4/11, 10/11 e 11/11 e libro pp. 286-289 (UDA 5, foto nella cartella di classe "5E collab").
+// Notazione del libro: V_g alimentazione, e = k_e·ω f.c.e.m. Dal 2026-11-24 niente basi (Ohm, prefissi, LED: solo nella spiegazione).
 // Formule verificate con verifica.py. Criteri della skill mappe-studio; formato dei riquadri: vedi integrali/contenuto_mappa.js.
-
 const img = (nome, alto) => `<img src="img/${nome}.svg" style="height:${alto}mm">`;
 
 const facciate = [
@@ -72,82 +71,53 @@ const facciate = [
     ],
   },
   {
-    titolo: "TPSEE · basi, passo-passo, acquisizione",
+    titolo: "TPSEE · motore in c.c. dinamico",
     sezioni: [
       {
-        titolo: "3. Basi",
+        titolo: "3. Modello completo",
         box: [
           {
-            mem: true, h: "Corrente", w: 3,
+            mem: true, h: "Elettrico e meccanico", w: 6, da: "circuito di armatura",
             b: [
-              "$I=\\frac{\\Delta Q}{\\Delta t}$ &nbsp; [A] = [C/s]",
-              "$|q_e|=1{,}602\\cdot10^{-19}$ C",
+              "$V_g-R\\,I-L\\frac{dI}{dt}-k_e\\,\\omega=0$",
+              "$k_{me}I-C_{res}-k_{att}\\,\\omega-J\\frac{d\\omega}{dt}=0$",
+              "$J\\frac{d\\omega}{dt}$ inerzia: contro $C_{me}$ in accelerazione, 0 a $\\omega$ costante",
             ],
           },
           {
-            mem: true, h: "Legge di Ohm", w: 3,
+            mem: true, h: "Con Laplace", w: 6,
             b: [
-              "$V=R\\,I$ &nbsp; [V] = [Ω]·[A]",
-              "$I$ entra dal lato +",
+              "$V_g(s)-R\\,I(s)-sL\\,I(s)-k_e\\,\\omega(s)=0$",
+              "$k_{me}I(s)-C_{res}(s)-k_{att}\\,\\omega(s)-sJ\\,\\omega(s)=0$",
+              "$I(s)=\\frac{V_g-k_e\\,\\omega(s)}{R+sL}$ &nbsp;&nbsp; $\\omega(s)=\\frac{k_{me}I-C_{res}}{k_{att}+sJ}$",
             ],
           },
           {
-            mem: true, h: "Prefissi", w: 6,
-            b: [
-              "p $10^{-12}$ · n $10^{-9}$ · µ $10^{-6}$ · m $10^{-3}$",
-              "k $10^{3}$ · M $10^{6}$ · G $10^{9}$ · T $10^{12}$",
-              "$\\frac{1}{10^{3}}=10^{-3}$ &nbsp;&nbsp; $10^{a}\\cdot10^{b}=10^{a+b}$",
-            ],
-          },
-          {
-            mem: true, h: "Serie e partitore", w: 3, da: "Ohm",
-            b: [
-              "$R_{eq}=R_1+R_2$, stessa $I$",
-              "$I=\\frac{V}{R_1+R_2}$",
-              "$V_{R_1}=V\\,\\frac{R_1}{R_1+R_2}$",
-            ],
-          },
-          {
-            mem: true, h: "LED", w: 3, da: "Ohm",
-            b: [
-              "$I$ da A a K, $V_{AK}\\approx2$ V",
-              "$R=\\frac{V-V_{AK}}{I_{LED}}$",
-              "$I_{LED}$ 10÷20 mA, max ≈ 30",
-            ],
+            mem: true, h: "Schema a blocchi: ingresso $V_g$, uscita $\\omega$", w: 6,
+            b: [img("blocchi", 22)],
+            dopo: ["con $C_{res}=0$: $\\frac{\\omega}{V_g}=\\frac{k_{me}}{(R+sL)(k_{att}+sJ)+k_ek_{me}}$ &nbsp; ⇐ 2° ordine"],
           },
         ],
       },
       {
-        titolo: "4. Motore passo-passo con L297 e L298",
+        titolo: "4. Collaudo e funzionamento",
         box: [
           {
-            mem: true, h: "Catena", w: 6,
-            flow: ["L297: sequenza delle fasi", "L298: doppio ponte H (potenza)", "motore passo-passo"],
-            dopo: ["L297: CLOCK = 1 passo · CW/CCW = verso · HALF/FULL"],
-          },
-          {
-            mem: true, h: "L298, ponte A", w: 4,
-            intest: ["ENA", "IN1", "IN2", "motore"],
+            mem: true, h: "Vedo → ricavo", w: 6,
+            intest: ["vedo", "ricavo"],
             tab: [
-              ["0", "X", "X", "off, libero"],
-              ["1", "0", "0", "fermo, frenato"],
-              ["1", "0", "1", "gira ↻"],
-              ["1", "1", "0", "gira ↺"],
-              ["1", "1", "1", "fermo, frenato"],
+              ["rotore bloccato ($\\omega=0$)", "$e=0$, $C_{att}=0$ → $k_{me}=\\frac{C_{meMax}}{I}$"],
+              ["rotore libero ($C_{res}=0$)", "$C_{me}=C_{att}=k_{att}\\,\\omega$ → $k_{att}=\\frac{k_{me}I}{\\omega}$"],
+              ["$V_g$, $R$, $I$, $\\omega$", "$e=V_g-RI$ → $k_e=\\frac{e}{\\omega}$"],
+              ["velocità $n$ in giri/min", "$k_e=\\frac{e}{n}$, $k_{att}=\\frac{C_{att}}{n}$"],
             ],
           },
           {
-            mem: true, h: "Uscite", w: 2,
-            b: ["OUT1 pin 2", "OUT2 pin 3", "2 LED opposti: si accende quello del verso"],
-          },
-        ],
-      },
-      {
-        titolo: "5. Acquisizione di un segnale",
-        box: [
-          {
-            mem: true, h: "Catena", w: 6,
-            flow: ["sensore", "condizionamento: amplifica, filtra, offset", "convertitore A/D"],
+            mem: true, h: "Motore e generatore", w: 6,
+            b: [
+              "$C_{me}$ e $\\omega$ concordi: motore; discordi: generatore (freno)",
+              "generatore: dinamo, energia meccanica → elettrica",
+            ],
           },
         ],
       },

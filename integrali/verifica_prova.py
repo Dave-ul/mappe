@@ -80,6 +80,15 @@ CASI = [
     ("S e^x sin", exp(x)*sin(x), exp(x)*(sin(x) - cos(x))/2, 2),
     ("S sost x-2", (x - 2)/sqrt(x + 3), Rational(2, 3)*sqrt((x + 3)**3) - 10*sqrt(x + 3), 2),
     ("S 1/(x(x+2))", 1/(x*(x + 2)), log(x)/2 - log(x + 2)/2, 2),
+    # Lavagna del 18/11 (chiavetta)
+    ("L18 ln(x^2+1)", log(x**2 + 1), x*log(x**2 + 1) - 2*x + 2*atan(x), 2),
+    ("L18 3x/sqrt(8-x)", 3*x/sqrt(8 - x), -48*sqrt(8 - x) + 2*(8 - x)*sqrt(8 - x), 2),
+    ("L18 (x+2)/e^x", (x + 2)/exp(x), -(x + 3)*exp(-x), 2),
+    # Nota del 23/11: razionali fratte con denominatore di 2° grado, e p. 1277 n. 508
+    ("23/11 D>0 (5x-1)/(x^2-x-2)", (5*x - 1)/(x**2 - x - 2), 3*log(x - 2) + 2*log(x + 1), 3),
+    ("23/11 D=0 (2x-3)/(x^2-4x+4)", (2*x - 3)/(x**2 - 4*x + 4), 2*log(x - 2) - 1/(x - 2), 3),
+    ("23/11 D<0 2x/(x^2+4x+5)", 2*x/(x**2 + 4*x + 5), log(x**2 + 4*x + 5) - 4*atan(x + 2), 2),
+    ("n. 508 (3x-5)/(x^2-2x-3)", (3*x - 5)/(x**2 - 2*x - 3), 2*log(x + 1) + log(x - 3), 4),
 ]
 
 # Problemi con condizioni: (nome, funzione trovata, derivata attesa, [(punto, valore atteso)])

@@ -1,5 +1,6 @@
 // Spiegazione completa di TPSEE: basi, motore in c.c., passo-passo con L297/L298, acquisizione (appunti Saber tranne Impianti Civili),
-// e dal 2026-11-22 motore dinamico ed encoder dal libro (foto pp. 79-83 e 286-289 nella cartella di classe "5E collab"),
+// dal 2026-11-22 motore dinamico ed encoder dal libro (foto pp. 79-83 e 286-289 nella cartella di classe "5E collab"),
+// dal 2026-11-24 SCR (nota Saber del 24/11 e lavagna del 24/11 dalla chiavetta, pp. 3 e 5-8; le altre pagine sono di altre classi),
 // con la notazione del libro per il motore (V_g alimentazione, e = k_e·ω f.c.e.m.).
 // Dal 2026-11-20 scritta in modo semplicissimo, come quella dell'op-amp: basi all'inizio, riquadri gialli
 // "Detto semplice" con un paragone, ragionamento passo per passo, formule inverse (nota Motore cc del 12/11, p. 6).
@@ -12,7 +13,7 @@ module.exports = {
   titolo: "TPSEE",
   blocchi: [
     { t: "titolo", testo: "TPSEE, spiegata semplice",
-      sotto: "TPSEE · basi, motore in c.c., passo-passo, acquisizione, encoder · dagli appunti da settembre al 12/11 e dal libro (pp. 79-83, 286-289) · giallo = detto semplice, per capire · bordo spesso = da sapere a memoria" },
+      sotto: "TPSEE · basi, motore in c.c., passo-passo, acquisizione, encoder, SCR · dagli appunti da settembre al 24/11 e dal libro (pp. 79-83, 286-289) · giallo = detto semplice, per capire · bordo spesso = da sapere a memoria" },
     { t: "p", testo: "Come leggerla: prima il riquadro <b>giallo</b>, che spiega l'idea con un paragone; poi le formule nel riquadro a <b>bordo spesso</b>, che vanno sapute; poi gli <b>esempi</b> con i numeri, passo per passo. Gli errori trovati negli appunti sono nell'ultima sezione." },
 
     { t: "sez", testo: "1 · Prima di cominciare: tensione, corrente, resistenza" },
@@ -280,7 +281,7 @@ module.exports = {
     ], dx: [
       facile(["Lo schema a blocchi è una <b>catena di montaggio</b>: la tensione entra, il primo blocco la trasforma in corrente, il secondo in coppia, il terzo in velocità. La velocità poi torna indietro (la f.c.e.m. $k_e\\omega$) e toglie un po' di tensione all'ingresso: è una <b>retroazione</b> che il motore fa da solo."]),
     ] },
-    { t: "p", testo: img2("blocchi", 30) },
+    { t: "p", testo: img("blocchi", 30) },
     { t: "p", testo: "Ingresso $V_g(s)$, uscita $\\omega(s)$. Il cerchio è un <b>nodo sommatore</b>: i segni dicono cosa si somma e cosa si toglie. $C_{res}$ entra come disturbo che toglie coppia." },
     { t: "box", tipo: "memo", titolo: "Funzione di trasferimento (senza carico, $C_{res}=0$)", righe: [
       "$$\\frac{\\omega(s)}{V_g(s)}=\\frac{k_{me}}{(R+sL)(k_{att}+sJ)+k_e\\,k_{me}}$$",
@@ -445,7 +446,48 @@ module.exports = {
       facile(["Due amici che salgono le scale uno dietro l'altro: guardando chi mette il piede per primo sul gradino capisci se stanno salendo o scendendo."]),
     ] },
 
-    { t: "sez", testo: "22 · Domande tipiche" },
+    { t: "sez", testo: "22 · SCR, il tiristore: un diodo che si accende a comando (lezione del 24/11)" },
+    facile(["L'SCR è un <b>cancello con la serratura a scatto</b>: finché nessuno preme il pulsante (il gate) resta chiuso anche se la gente spinge. Basta una spinta breve sul pulsante e si apre; da lì resta aperto da solo finché passa gente. Quando la folla finisce (la corrente scende quasi a zero) si richiude, e per riaprirlo serve un'altra spinta."]),
+    { t: "due", sx: [
+      { t: "p", testo: "L'<b>SCR</b> (<i>Silicon Controlled Rectifier</i>, raddrizzatore controllato al silicio) o <b>tiristore</b> è un diodo con un terzo piedino: <b>anodo A</b>, <b>catodo K</b> e <b>gate G</b>. Come il diodo fa passare la corrente solo da A a K, ma non basta che la tensione sia positiva: aspetta il comando sul gate, un breve impulso di corrente $i_G$." },
+      { t: "p", testo: img2("scr", 34) },
+      { t: "p", testo: "Lo schema del 24/11: generatore alternato e SCR. Qui c'è anche il <b>carico</b> $R_L$ (per esempio una lampada): senza, quando l'SCR conduce, il generatore sarebbe in cortocircuito." },
+    ], dx: [
+      { t: "box", tipo: "memo", titolo: "Come si comporta", righe: [
+        "<b>innesco</b>: con $V_{AK}>0$, un impulso di corrente sul gate lo accende e conduce da A a K",
+        "<b>autoritenuta</b>: una volta acceso resta acceso anche se tolgo il comando dal gate",
+        "<b>spegnimento</b>: si spegne quando la corrente di anodo scende sotto la <b>corrente di mantenimento</b> $I_H$ (dal datasheet)",
+        "con $V_{AK}<0$ non conduce mai, come un diodo",
+      ] },
+      { t: "p", testo: "<b>La caratteristica</b> $I_{AK}$-$V_{AK}$ della lavagna ha due rami: <b>spento</b>, la corrente resta quasi zero anche con tanta tensione (ramo quasi orizzontale sull'asse $V_{AK}$); <b>acceso</b>, la tensione resta quasi zero e la corrente la decide il carico (ramo quasi verticale). L'impulso sul gate fa saltare dal primo al secondo." },
+    ] },
+    { t: "due", sx: [
+      { t: "box", tipo: "memo", titolo: "Un interruttore che non scalda", righe: [
+        "<b>ON</b>: $V_{AK}\\approx0$ &nbsp;&nbsp; <b>OFF</b>: $I_{AK}\\approx0$",
+        "$$P=V_{AK}\\cdot I_{AK}\\approx0$$",
+        "in tutti e due gli stati uno dei due fattori è quasi zero, quindi la potenza persa è quasi zero",
+      ] },
+      facile(["Un rubinetto o è tutto chiuso (niente acqua) o tutto aperto (nessuno sforzo): in nessuno dei due casi si spreca energia. Si spreca solo mentre lo giri."]),
+    ], dx: [
+      { t: "p", testo: "<b>La commutazione</b> (lavagna, p. 7): passando da OFF a ON la tensione $V$ scende e la corrente $I$ sale, ma non di colpo. Per un attimo ci sono <b>tutte e due</b>, e il loro prodotto fa un <b>picco di potenza</b>: è lì che l'SCR scalda. Più commuta spesso, più scalda." },
+    ] },
+    { t: "due", sx: [
+      { t: "box", tipo: "memo", titolo: "La tensione di rete", righe: [
+        "$$V_{eff}=\\frac{V_{Max}}{\\sqrt2}\\approx0{,}707\\,V_{Max}\\qquad V_{Max}=\\frac{V_{eff}}{0{,}707}$$",
+        "i 220 V di casa sono il valore <b>efficace</b>: il picco è $V_{Max}=220\\cdot\\sqrt2\\approx311$ V",
+        "50 Hz → periodo $T=\\frac{1}{50}=20$ ms",
+      ] },
+      facile(["Il valore efficace è la tensione continua che scalderebbe una stufa allo stesso modo. La sinusoide sale fino a 311 V ma passa anche da zero: in media scalda come 220 V fissi."]),
+    ], dx: [
+      { t: "box", tipo: "memo", titolo: "SCR in alternata: controllo di fase", righe: [
+        img2("scr_ca", 34),
+        "nella semionda <b>positiva</b> conduce dall'impulso (angolo $\\alpha$) fino alla fine della semionda: sul carico arriva la parte grigia",
+        "a fine semionda la corrente va a zero e l'SCR si spegne da solo; nella semionda <b>negativa</b> resta spento",
+        "impulso <b>più tardi</b> → meno area → meno tensione sul carico (meno luce, meno calore). L'area vale $1+\\cos\\alpha$: con $\\alpha=0$ tutta la semionda, con $\\alpha=180°$ niente",
+      ] },
+    ] },
+
+    { t: "sez", testo: "23 · Domande tipiche" },
     { t: "tab", intest: ["domanda", "dove guardare"], larghezze: ["50%", "50%"], righe: [
       ["Calcola corrente, tensione o resistenza", "§1 e §3: Ohm e formule inverse"],
       ["Calcola le tensioni in un partitore", "§4"],
@@ -468,9 +510,13 @@ module.exports = {
       ["Calcola angolo, giri/min, velocità o spazio", "§20"],
       ["Velocità massima che l'encoder riesce a leggere", "§20: $T_{OFF}$ e larghezza del foro"],
       ["Come si capisce il verso di rotazione?", "§21: fasi A e B, flip-flop D"],
+      ["Cos'è un SCR? Come si accende e come si spegne?", "§22: impulso sul gate, autoritenuta, $I_H$"],
+      ["Perché l'SCR acceso o spento dissipa poco? Quando scalda?", "§22: $P=V_{AK}I_{AK}\\approx0$, picco in commutazione"],
+      ["Cosa fa l'SCR in corrente alternata?", "§22: conduce dall'impulso a fine semionda positiva"],
+      ["Valore efficace e valore massimo della rete", "§22: $V_{Max}=\\sqrt2\\,V_{eff}\\approx311$ V"],
     ] },
 
-    { t: "sez", testo: "23 · Correzioni agli appunti e al libro" },
-    { t: "p", testo: "• <b>10/11 Motore cc</b> (simboli del quaderno): la caratteristica giusta è $C_{me}=\\frac{K_{me}V_A}{R_A}-\\frac{K_{me}K_E}{R_A}\\omega$, cioè col libro $\\frac{k_{me}V_g}{R}-\\frac{k_{me}k_e}{R}\\omega$: negli appunti c'è $V_g$ (che sul quaderno è la f.c.e.m.) al posto di $V_A$, e $R$ al posto di $R_A$. Le caratteristiche vanno disegnate come <b>rette parallele</b>, non curve.<br>• <b>10/11 Motore cc, pagina 1</b>: $R_2$ è 7 kΩ, non 7 Ω. In serie la corrente è una sola: con 5 V, $I=\\frac{5}{10\\,\\text{k}\\Omega}=0{,}5$ mA (non 0,2 mA, e non $\\frac{5}{3\\text{k}}$ e $\\frac{5}{7\\text{k}}$); $\\Delta V_{R_1}=1{,}5$ V e $\\Delta V_{R_2}=3{,}5$ V.<br>• <b>3/11 lavagna</b>: nella scala dei prefissi \"mA\" compare due volte; sotto µA viene <b>nA</b> (nano, $10^{-9}$), poi pA.<br>• <b>28/9</b>: nella tabella del L298 le righe ENA = 1 con IN1 = IN2 sono vuote: il motore è fermo e frenato.<br>• <b>Libro p. 82, esercizio 8</b>: arrotonda $x$ a 2,6 mm e trova 3,71 m/s e 1418 giri/min; senza arrotondare vengono 3,74 m/s e 1429 giri/min. Differenza piccola, il metodo è giusto.<br>• <b>Libro p. 82</b>: l'integrato per leggere gli encoder è scritto \"74LS2000B\"; con questa sigla non l'ho trovato: probabilmente è l'HCTL-2000 (lettore di encoder in quadratura). Da chiedere al prof se serve.<br>• <b>Libro p. 81</b>: \"tachimentrico\" è un refuso di tachimetrico." },
+    { t: "sez", testo: "24 · Correzioni agli appunti e al libro" },
+    { t: "p", testo: "• <b>10/11 Motore cc</b> (simboli del quaderno): la caratteristica giusta è $C_{me}=\\frac{K_{me}V_A}{R_A}-\\frac{K_{me}K_E}{R_A}\\omega$, cioè col libro $\\frac{k_{me}V_g}{R}-\\frac{k_{me}k_e}{R}\\omega$: negli appunti c'è $V_g$ (che sul quaderno è la f.c.e.m.) al posto di $V_A$, e $R$ al posto di $R_A$. Le caratteristiche vanno disegnate come <b>rette parallele</b>, non curve.<br>• <b>10/11 Motore cc, pagina 1</b>: $R_2$ è 7 kΩ, non 7 Ω. In serie la corrente è una sola: con 5 V, $I=\\frac{5}{10\\,\\text{k}\\Omega}=0{,}5$ mA (non 0,2 mA, e non $\\frac{5}{3\\text{k}}$ e $\\frac{5}{7\\text{k}}$); $\\Delta V_{R_1}=1{,}5$ V e $\\Delta V_{R_2}=3{,}5$ V.<br>• <b>3/11 lavagna</b>: nella scala dei prefissi \"mA\" compare due volte; sotto µA viene <b>nA</b> (nano, $10^{-9}$), poi pA.<br>• <b>28/9</b>: nella tabella del L298 le righe ENA = 1 con IN1 = IN2 sono vuote: il motore è fermo e frenato.<br>• <b>Libro p. 82, esercizio 8</b>: arrotonda $x$ a 2,6 mm e trova 3,71 m/s e 1418 giri/min; senza arrotondare vengono 3,74 m/s e 1429 giri/min. Differenza piccola, il metodo è giusto.<br>• <b>Libro p. 82</b>: l'integrato per leggere gli encoder è scritto \"74LS2000B\"; con questa sigla non l'ho trovato: probabilmente è l'HCTL-2000 (lettore di encoder in quadratura). Da chiedere al prof se serve.<br>• <b>Libro p. 81</b>: \"tachimentrico\" è un refuso di tachimetrico.<br>• <b>24/11</b>: nello schema dell'SCR manca il <b>carico</b> in serie (lampada o resistenza $R_L$): così, quando l'SCR conduce, il generatore è in cortocircuito.<br>• <b>Lavagna 24/11, p. 8</b>: il terzo impulso sul gate è disegnato appena prima dello zero, ancora nella semionda negativa: lì l'SCR non si accende ($V_{AK}<0$). Per far condurre quasi tutta la semionda l'impulso va dato subito <b>dopo</b> lo zero." },
   ],
 };
