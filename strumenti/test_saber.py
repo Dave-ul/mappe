@@ -34,7 +34,8 @@ def sha(percorso):
 class Saber(unittest.TestCase):
     def setUp(self):
         self.t = Path(tempfile.mkdtemp())
-        self.pdf_dir, self.saber, self.backup = self.t / "Mappe", self.t / "Saber", self.t / "Backup"
+        self.scuola, self.saber, self.backup = self.t / "Scuola", self.t / "Saber", self.t / "Backup"
+        self.pdf_dir = self.scuola / "Mappe"
         for d in (self.pdf_dir, self.saber / "Elettronica", self.backup):
             d.mkdir(parents=True)
         self.elenco = self.t / "saber.tsv"
@@ -43,7 +44,7 @@ class Saber(unittest.TestCase):
         finto.write_text(f'#!/bin/bash\necho avvio >> "{self.registro}"\n'
                          "trap 'kill $! 2>/dev/null; exit 0' TERM\nsleep 30 & wait\n")
         finto.chmod(0o755)
-        self.env = dict(os.environ, MAPPE_PDF_DIR=str(self.pdf_dir), SABER_DIR=str(self.saber),
+        self.env = dict(os.environ, SCUOLA_DIR=str(self.scuola), SABER_DIR=str(self.saber),
                         SABER_BACKUP_DIR=str(self.backup), SABER_CMD=str(finto), SABER_ATTESA="0.5",
                         SABER_ELENCO=str(self.elenco))
 
@@ -82,29 +83,29 @@ class Saber(unittest.TestCase):
         pdf(self.pdf_dir / "Mappa_fuori.pdf", 1)
         for nome in ("a", "b"):
             (self.saber / "Elettronica" / f"{nome}.sbn2").touch()
-        self.elenca(("Mappa_a.pdf", "Elettronica/a", sha(self.pdf_dir / "Mappa_a.pdf")),
-                    ("Mappa_b.pdf", "Elettronica/b", "vecchio"),
-                    ("Mappa_c.pdf", "Elettronica/c", ""))
+        self.elenca(("Mappe/Mappa_a.pdf", "Elettronica/a", sha(self.pdf_dir / "Mappa_a.pdf")),
+                    ("Mappe/Mappa_b.pdf", "Elettronica/b", "vecchio"),
+                    ("Mappe/Mappa_c.pdf", "Elettronica/c", ""))
         esito = self.lancia("stato")
         self.assertEqual(esito.returncode, 1)
-        self.assertIn("ok        Mappa_a.pdf", esito.stdout)
-        self.assertIn("cambiato  Mappa_b.pdf", esito.stdout)
-        self.assertIn("nuovo     Mappa_c.pdf", esito.stdout)
-        self.assertIn("Mappa_fuori.pdf", esito.stdout)
+        self.assertIn("ok        Mappe/Mappa_a.pdf", esito.stdout)
+        self.assertIn("cambiato  Mappe/Mappa_b.pdf", esito.stdout)
+        self.assertIn("nuovo     Mappe/Mappa_c.pdf", esito.stdout)
+        self.assertIn("Mappe/Mappa_fuori.pdf", esito.stdout)
         self.assertIn("non in saber.tsv", esito.stdout)
 
     def test_stato_tutto_ok(self):
         pdf(self.pdf_dir / "Mappa_a.pdf", 1)
         (self.saber / "Elettronica" / "a.sbn2").touch()
-        self.elenca(("Mappa_a.pdf", "Elettronica/a", sha(self.pdf_dir / "Mappa_a.pdf")))
+        self.elenca(("Mappe/Mappa_a.pdf", "Elettronica/a", sha(self.pdf_dir / "Mappa_a.pdf")))
         self.assertEqual(self.lancia("stato").returncode, 0)
 
     # ------------------------------------------------------------ aggiorna
 
     def test_nota_gia_uguale_registra_solo_lo_sha(self):
         pdf(self.pdf_dir / "Mappa_prova.pdf", 2)
-        self.nota_da("Mappa_prova.pdf")
-        self.elenca(("Mappa_prova.pdf", NOTA, ""))
+        self.nota_da("Mappe/Mappa_prova.pdf")
+        self.elenca(("Mappe/Mappa_prova.pdf", NOTA, ""))
         esito = self.lancia("aggiorna")
         self.assertEqual(esito.returncode, 0, esito.stdout + esito.stderr)
         self.assertEqual(self.avvii(), 0, "Saber non va aperto se la nota è già uguale")
@@ -112,13 +113,13 @@ class Saber(unittest.TestCase):
 
     def test_piu_note_gia_uguali(self):
         pdf(self.pdf_dir / "Mappa_prova.pdf", 1)
-        self.nota_da("Mappa_prova.pdf")
+        self.nota_da("Mappe/Mappa_prova.pdf")
         pdf(self.pdf_dir / "Mappa_altra.pdf", 1, "altra")
         (self.t / "conv").mkdir()
-        self.assertEqual(self.lancia("converti", "Mappa_altra.pdf", str(self.t / "conv" / "altra.sbn2")).returncode, 0)
+        self.assertEqual(self.lancia("converti", "Mappe/Mappa_altra.pdf", str(self.t / "conv" / "altra.sbn2")).returncode, 0)
         for f in (self.t / "conv").iterdir():
             shutil.copy(f, self.saber / "Elettronica" / f.name)
-        self.elenca(("Mappa_prova.pdf", NOTA, "vecchio"), ("Mappa_altra.pdf", "Elettronica/altra", "vecchio"))
+        self.elenca(("Mappe/Mappa_prova.pdf", NOTA, "vecchio"), ("Mappe/Mappa_altra.pdf", "Elettronica/altra", "vecchio"))
         esito = self.lancia("aggiorna")
         self.assertEqual(esito.returncode, 0, esito.stdout + esito.stderr)
         self.assertEqual(self.avvii(), 0)
@@ -126,10 +127,10 @@ class Saber(unittest.TestCase):
 
     def test_pdf_cambiato_carica_con_backup_e_due_sync(self):
         pdf(self.pdf_dir / "Mappa_prova.pdf", 2, "vecchia")
-        self.nota_da("Mappa_prova.pdf")
+        self.nota_da("Mappe/Mappa_prova.pdf")
         vecchia = (self.saber / "Elettronica" / "26-11-10 Elettronica - Mappa prova.sbn2.0").read_bytes()
         pdf(self.pdf_dir / "Mappa_prova.pdf", 2, "nuova")
-        self.elenca(("Mappa_prova.pdf", NOTA, "vecchio"))
+        self.elenca(("Mappe/Mappa_prova.pdf", NOTA, "vecchio"))
         esito = self.lancia("aggiorna")
         self.assertEqual(esito.returncode, 0, esito.stdout + esito.stderr)
         nuova = (self.saber / "Elettronica" / "26-11-10 Elettronica - Mappa prova.sbn2.0").read_bytes()
@@ -143,7 +144,7 @@ class Saber(unittest.TestCase):
 
     def test_nota_nuova(self):
         pdf(self.pdf_dir / "Mappa_prova.pdf", 1)
-        self.elenca(("Mappa_prova.pdf", NOTA, ""))
+        self.elenca(("Mappe/Mappa_prova.pdf", NOTA, ""))
         esito = self.lancia("aggiorna")
         self.assertEqual(esito.returncode, 0, esito.stdout + esito.stderr)
         self.assertIn("26-11-10 Elettronica - Mappa prova.sbn2", self.file_nota())
@@ -151,9 +152,9 @@ class Saber(unittest.TestCase):
 
     def test_meno_pagine_stub_poi_tolti(self):
         pdf(self.pdf_dir / "Mappa_prova.pdf", 3, "vecchia")
-        self.nota_da("Mappa_prova.pdf")
+        self.nota_da("Mappe/Mappa_prova.pdf")
         pdf(self.pdf_dir / "Mappa_prova.pdf", 2, "nuova")
-        self.elenca(("Mappa_prova.pdf", NOTA, "vecchio"))
+        self.elenca(("Mappe/Mappa_prova.pdf", NOTA, "vecchio"))
         esito = self.lancia("aggiorna")
         self.assertEqual(esito.returncode, 0, esito.stdout + esito.stderr)
         self.assertNotIn("26-11-10 Elettronica - Mappa prova.sbn2.2", self.file_nota())
@@ -161,14 +162,14 @@ class Saber(unittest.TestCase):
 
     def test_tratti_a_mano_rifiuta(self):
         pdf(self.pdf_dir / "Mappa_prova.pdf", 1, "vecchia")
-        self.nota_da("Mappa_prova.pdf")
+        self.nota_da("Mappe/Mappa_prova.pdf")
         file = self.saber / "Elettronica" / "26-11-10 Elettronica - Mappa prova.sbn2"
         nota = bson.decode(file.read_bytes())
         nota["z"][0]["s"] = [{"p": b"\x00" * 8, "c": 0}]
         file.write_bytes(bson.encode(nota))
         prima = file.read_bytes()
         pdf(self.pdf_dir / "Mappa_prova.pdf", 1, "nuova")
-        self.elenca(("Mappa_prova.pdf", NOTA, "vecchio"))
+        self.elenca(("Mappe/Mappa_prova.pdf", NOTA, "vecchio"))
         esito = self.lancia("aggiorna")
         self.assertEqual(esito.returncode, 1)
         self.assertIn("tratti scritti a mano", esito.stdout)
@@ -176,7 +177,7 @@ class Saber(unittest.TestCase):
 
     def test_saber_aperto_rifiuta(self):
         pdf(self.pdf_dir / "Mappa_prova.pdf", 1)
-        self.elenca(("Mappa_prova.pdf", NOTA, ""))
+        self.elenca(("Mappe/Mappa_prova.pdf", NOTA, ""))
         aperto = subprocess.Popen([self.env["SABER_CMD"]], start_new_session=True)
         time.sleep(0.3)
         try:
@@ -192,22 +193,54 @@ class Saber(unittest.TestCase):
     def test_aggiungi(self):
         pdf(self.pdf_dir / "Mappa_prova.pdf", 1)
         self.elenca()
-        esito = self.lancia("aggiungi", "Mappa_prova.pdf", NOTA)
+        esito = self.lancia("aggiungi", "Mappe/Mappa_prova.pdf", NOTA)
         self.assertEqual(esito.returncode, 0, esito.stderr)
-        self.assertIn(f"Mappa_prova.pdf\t{NOTA}\t\n", self.elenco.read_text())
-        self.assertNotEqual(self.lancia("aggiungi", "Mappa_prova.pdf", NOTA).returncode, 0, "niente doppioni")
+        self.assertIn(f"Mappe/Mappa_prova.pdf\t{NOTA}\t\n", self.elenco.read_text())
+        self.assertNotEqual(self.lancia("aggiungi", "Mappe/Mappa_prova.pdf", NOTA).returncode, 0, "niente doppioni")
         self.assertNotEqual(self.lancia("aggiungi", "Manca.pdf", "Elettronica/x").returncode, 0)
-        self.assertNotEqual(self.lancia("aggiungi", "Mappa_prova.pdf", "../fuori").returncode, 0)
+        self.assertNotEqual(self.lancia("aggiungi", "Mappe/Mappa_prova.pdf", "../fuori").returncode, 0)
 
-    def test_aggiungi_percorso_assoluto_salva_il_nome(self):
+    def test_aggiungi_percorso_assoluto_salva_il_relativo(self):
         pdf(self.pdf_dir / "Mappa_prova.pdf", 1)
         self.elenca()
         esito = self.lancia("aggiungi", str(self.pdf_dir / "Mappa_prova.pdf"), NOTA)
         self.assertEqual(esito.returncode, 0, esito.stderr)
-        self.assertIn(f"\nMappa_prova.pdf\t{NOTA}\t\n", self.elenco.read_text())
+        self.assertIn(f"\nMappe/Mappa_prova.pdf\t{NOTA}\t\n", self.elenco.read_text())
         altro = Path(tempfile.mkdtemp()) / "Fuori.pdf"
         pdf(altro, 1)
         self.assertNotEqual(self.lancia("aggiungi", str(altro), "Elettronica/y").returncode, 0, "pdf fuori dalla cartella")
+
+
+    def test_stato_spiegazioni_in_fonti(self):
+        spiegazioni = self.scuola / "Fonti/Matematica/Spiegazioni"
+        spiegazioni.mkdir(parents=True)
+        pdf(spiegazioni / "Spiegazione_a.pdf", 1)
+        pdf(self.scuola / "Fonti/Matematica/Spiegazioni/Spiegazione_fuori.pdf", 1)
+        (self.saber / "Elettronica" / "a.sbn2").touch()
+        self.elenca(("Fonti/Matematica/Spiegazioni/Spiegazione_a.pdf", "Elettronica/a",
+                     sha(spiegazioni / "Spiegazione_a.pdf")))
+        esito = self.lancia("stato")
+        self.assertIn("ok        Fonti/Matematica/Spiegazioni/Spiegazione_a.pdf", esito.stdout)
+        self.assertIn("?         Fonti/Matematica/Spiegazioni/Spiegazione_fuori.pdf", esito.stdout)
+        self.assertEqual(esito.returncode, 1)
+
+    def test_stato_rifiuta_pdf_fuori_dalla_radice(self):
+        pdf(self.t / "Fuori.pdf", 1)
+        self.elenca(("../Fuori.pdf", "Elettronica/a", ""))
+        esito = self.lancia("stato")
+        self.assertEqual(esito.returncode, 1)
+        self.assertIn("fuori da", esito.stdout)
+
+    def test_aggiungi_spiegazione_in_fonti_salva_il_relativo(self):
+        spiegazioni = self.scuola / "Fonti/TPSEE/Spiegazioni"
+        spiegazioni.mkdir(parents=True)
+        pdf(spiegazioni / "Spiegazione_prova.pdf", 1)
+        self.elenca()
+        esito = self.lancia("aggiungi", str(spiegazioni / "Spiegazione_prova.pdf"), NOTA)
+        self.assertEqual(esito.returncode, 0, esito.stdout + esito.stderr)
+        self.assertIn(f"\nFonti/TPSEE/Spiegazioni/Spiegazione_prova.pdf\t{NOTA}\t\n", self.elenco.read_text())
+        pdf(self.t / "Fuori.pdf", 1)
+        self.assertNotEqual(self.lancia("aggiungi", "../Fuori.pdf", "Elettronica/y").returncode, 0, "relativo fuori")
 
 
 if __name__ == "__main__":

@@ -1,7 +1,7 @@
 # Amplificatore operazionale
 
 - `contenuto_mappa.js` + `img/` → `~/Documenti/Scuola/Mappe/Mappa_amplificatore_operazionale.pdf` (2026-11-10).
-- `spiegazione.js` + `img/` (anche `modello.svg`, `caratteristica.svg`) → `~/Documenti/Scuola/Mappe/Spiegazione_amplificatore_operazionale.pdf` (2026-11-11): spiegazione completa da libro e appunti Saber, con dimostrazioni, esempi, domande e correzioni agli appunti. Dal 2026-11-16 scritta in modo semplicissimo (17 pagine): sezione iniziale sulle basi (Ohm, Kirchhoff, partitore, sovrapposizione), riquadri gialli "Detto semplice" (tipo `facile` in `genera_doc.js`) con un paragone per ogni circuito, esempi passo per passo; disegno `img/altalena.svg` per invertente e non invertente.
+- `spiegazione.js` + `img/` (anche `modello.svg`, `caratteristica.svg`) → `~/Documenti/Scuola/Fonti/Elettronica/Spiegazioni/Spiegazione_amplificatore_operazionale.pdf` (2026-11-11): spiegazione completa da libro e appunti Saber, con dimostrazioni, esempi, domande e correzioni agli appunti. Dal 2026-11-16 scritta in modo semplicissimo (17 pagine): sezione iniziale sulle basi (Ohm, Kirchhoff, partitore, sovrapposizione), riquadri gialli "Detto semplice" (tipo `facile` in `genera_doc.js`) con un paragone per ogni circuito, esempi passo per passo; disegno `img/altalena.svg` per invertente e non invertente.
 - `mappa_mentale.js` + `img/` → `~/Documenti/Scuola/Mappe/Mappa_mentale_amplificatore_operazionale.pdf` (2026-11-12): stessi contenuti come mappa mentale (A4 orizzontale fronte-retro, rami numerati in senso orario, derivati come foglie del ramo da cui vengono), con `genera_mentale.js`.
 - `verifica.py`: risolve ogni circuito con guadagno finito e fa il limite, più passaggi ed esempi della spiegazione (52/52).
 - `strumenti/ritaglia_circuiti.py`: ritaglia i circuiti come PNG dalla vecchia mappa fitta (generatore perso), salvata in `~/Documenti/Backup/mappe-opamp-2026-11-10/Mappa_esame_amplificatore_operazionale.pdf`.
@@ -13,6 +13,6 @@ Dalla radice del repo:
 
     node genera_mappa.js opamp ~/Documenti/Scuola/Mappe/Mappa_amplificatore_operazionale.pdf
     node genera_mentale.js opamp ~/Documenti/Scuola/Mappe/Mappa_mentale_amplificatore_operazionale.pdf
-    node genera_doc.js opamp/spiegazione.js ~/Documenti/Scuola/Mappe/Spiegazione_amplificatore_operazionale.pdf
+    node genera_doc.js opamp/spiegazione.js ~/Documenti/Scuola/Fonti/Elettronica/Spiegazioni/Spiegazione_amplificatore_operazionale.pdf
     venv/bin/python -I opamp/verifica.py
     venv/bin/python -I opamp/strumenti/ritaglia_circuiti.py <vecchia_mappa.pdf> opamp/img

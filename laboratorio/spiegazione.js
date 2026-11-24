@@ -1,6 +1,6 @@
 // Spiegazione del laboratorio di elettronica, nello stesso stile semplice della spiegazione op-amp:
 // riquadri gialli "Detto semplice", ragionamento passo per passo, esempi con i numeri delle esperienze.
-// Fonti: quaderno di laboratorio (foto in ~/Documenti/Scuola/Elettronica/Appunti/Laboratorio), slide del prof, Saber.
+// Fonti: quaderno di laboratorio (foto in ~/Documenti/Scuola/Fonti/Elettronica/Appunti/Laboratorio), slide del prof, Saber.
 // Formule ed esempi numerici controllati da verifica.py; schemi degli amplificatori disegnati da disegna_circuiti.py.
 const svg = (nome, alto) => `<img src="img/${nome}.svg" style="height:${alto}mm;max-width:100%;object-fit:contain;display:block;margin:1.5mm auto">`;
 const facile = (righe, titolo = "Detto semplice") => ({ t: "box", tipo: "facile", titolo, righe });

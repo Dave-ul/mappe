@@ -1,7 +1,8 @@
-"""Tiene le note Saber allineate ai PDF in ~/Documenti/Scuola/Mappe.
+"""Tiene le note Saber allineate ai PDF delle mappe e delle spiegazioni.
 
 saber.tsv (nella radice del repo) dice quale nota Saber corrisponde a ogni PDF e lo sha256
-del PDF caricato l'ultima volta.
+del PDF caricato l'ultima volta. I PDF sono scritti relativi a ~/Documenti/Scuola: le mappe
+in Mappe/, le spiegazioni e le prove in Fonti/<Materia>/Spiegazioni/.
 
   venv/bin/python -I strumenti/saber.py stato             esce con 1 se qualcosa va caricato
   venv/bin/python -I strumenti/saber.py aggiorna          carica i PDF cambiati
@@ -28,7 +29,8 @@ import bson
 
 HOME = Path.home()
 REPO = Path(__file__).resolve().parents[1]
-PDF_DIR = Path(os.environ.get("MAPPE_PDF_DIR", HOME / "Documenti/Scuola/Mappe"))
+SCUOLA_DIR = Path(os.environ.get("SCUOLA_DIR", HOME / "Documenti/Scuola"))
+CARTELLE_PDF = ("Mappe/*.pdf", "Fonti/*/Spiegazioni/*.pdf")  # dove cercare i PDF non registrati
 SABER_DIR = Path(os.environ.get("SABER_DIR", HOME / "Documenti/Saber"))
 BACKUP_DIR = Path(os.environ.get("SABER_BACKUP_DIR", HOME / "Documenti/Backup"))
 ELENCO = Path(os.environ.get("SABER_ELENCO", REPO / "saber.tsv"))
@@ -69,6 +71,14 @@ def sha256(percorso):
     return hashlib.sha256(percorso.read_bytes()).hexdigest()
 
 
+def percorso_pdf(relativo):
+    """Il PDF scritto in saber.tsv, controllando che resti dentro la cartella Scuola."""
+    percorso = (SCUOLA_DIR / relativo).resolve()
+    if SCUOLA_DIR.resolve() not in percorso.parents or ".." in Path(relativo).parts:
+        raise Errore(f"pdf fuori da {SCUOLA_DIR}: {relativo}")
+    return percorso
+
+
 def file_nota(nota):
     """Il .sbn2 della nota, controllando che resti dentro la cartella di Saber."""
     percorso = (SABER_DIR / f"{nota}.sbn2").resolve()
@@ -92,7 +102,7 @@ def pagine(sbn2):
 
 
 def stato_voce(voce):
-    pdf = PDF_DIR / voce["pdf"]
+    pdf = percorso_pdf(voce["pdf"])
     if not pdf.is_file():
         return "manca il PDF"
     if not file_nota(voce["nota"]).exists():
@@ -108,10 +118,11 @@ def stato():
         da_fare += esito != "ok"
         print(f"{esito:<9} {voce['pdf']}  →  {voce['nota']}")
     noti = {v["pdf"] for v in voci}
-    for pdf in sorted(PDF_DIR.glob("*.pdf")):
-        if pdf.name not in noti:
+    for pdf in sorted(p for schema in CARTELLE_PDF for p in SCUOLA_DIR.glob(schema)):
+        relativo = pdf.relative_to(SCUOLA_DIR).as_posix()
+        if relativo not in noti:
             da_fare += 1
-            print(f"{'?':<9} {pdf.name}  non in saber.tsv (aggiungilo con: saber.py aggiungi)")
+            print(f"{'?':<9} {relativo}  non in saber.tsv (aggiungilo con: saber.py aggiungi)")
     return 1 if da_fare else 0
 
 
@@ -176,9 +187,9 @@ def prepara(voci, lavoro):
         sbn2 = file_nota(voce["nota"])
         nuova = lavoro / str(indice) / sbn2.name
         nuova.parent.mkdir(parents=True)
-        converti(PDF_DIR / voce["pdf"], nuova)
+        converti(percorso_pdf(voce["pdf"]), nuova)
         if esito == "cambiato" and stesse_pagine(nuova, sbn2):
-            voce["sha"] = sha256(PDF_DIR / voce["pdf"])
+            voce["sha"] = sha256(percorso_pdf(voce["pdf"]))
             print(f"già uguale {voce['pdf']}: registro solo lo sha")
             continue
         da_caricare.append((voce, sbn2, nuova))
@@ -234,7 +245,7 @@ def aggiorna():
             f.unlink(missing_ok=True)
         for voce, sbn2, nuova in da_caricare:
             controlla_copia(sbn2, nuova)
-            voce["sha"] = sha256(PDF_DIR / voce["pdf"])
+            voce["sha"] = sha256(percorso_pdf(voce["pdf"]))
             print(f"caricato  {voce['pdf']}  →  {voce['nota']}")
         scrivi_elenco(voci)
     if da_caricare:
@@ -246,11 +257,11 @@ def aggiungi(pdf, nota):
     voci = leggi_elenco()
     percorso = Path(pdf)
     if percorso.is_absolute():
-        if percorso.resolve().parent != PDF_DIR.resolve():
-            raise Errore(f"{pdf} non è in {PDF_DIR}")
-        pdf = percorso.name
-    if not (PDF_DIR / pdf).is_file():
-        raise Errore(f"non trovo {PDF_DIR / pdf}")
+        if SCUOLA_DIR.resolve() not in percorso.resolve().parents:
+            raise Errore(f"{pdf} non è in {SCUOLA_DIR}")
+        pdf = percorso.resolve().relative_to(SCUOLA_DIR.resolve()).as_posix()
+    if not percorso_pdf(pdf).is_file():
+        raise Errore(f"non trovo {SCUOLA_DIR / pdf}")
     file_nota(nota)
     if any(v["pdf"] == pdf or v["nota"] == nota for v in voci):
         raise Errore(f"{pdf} o {nota} è già in {ELENCO.name}")
@@ -261,7 +272,7 @@ def aggiungi(pdf, nota):
 
 def main(argomenti):
     comandi = {"stato": (stato, 0), "aggiorna": (aggiorna, 0), "aggiungi": (aggiungi, 2),
-               "converti": (lambda pdf, out: converti(PDF_DIR / pdf, Path(out)) or 0, 2)}
+               "converti": (lambda pdf, out: converti(percorso_pdf(pdf), Path(out)) or 0, 2)}
     if not argomenti or argomenti[0] not in comandi or len(argomenti) - 1 != comandi[argomenti[0]][1]:
         print(__doc__, file=sys.stderr)
         return 2
