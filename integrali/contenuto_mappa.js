@@ -104,6 +104,7 @@ const facciate = [
                     { t: "$\\Delta<0$ $\\to$ completo il quadrato" },
                   ],
                 },
+                { t: "$D$ di grado $>2$ $\\to$ scompongo: $\\frac{A}{x-a}+\\frac{Bx+C}{\\text{trinomio}\\ \\Delta<0}$" },
               ],
             },
           },

@@ -269,6 +269,50 @@ module.exports = {
       ] },
       facile(["Il modulo nel $\\ln$ serve quando l'argomento può essere negativo; $x^2+4x+5$ è sempre positivo ($\\Delta<0$), quindi lì il modulo non serve."], "Occhio"),
     ] },
+    { t: "p", testo: "<b>La lezione del 25/11</b> (nota e lavagna): i due casi che mancavano, cioè numeratore di grado più alto (passo 1) e denominatore di grado > 2 (passo 5)." },
+    { t: "due", sx: [
+      { t: "box", titolo: "Grado $N\\geq$ grado $D$", righe: [
+        "$\\int\\frac{x^3+2x^2+x+1}{x^2+1}dx$",
+        "1. divido $x^3+2x^2+x+1$ per $x^2+1$: quoziente $x+2$, resto $-1$",
+        "2. $\\frac ND=x+2-\\frac{1}{x^2+1}$",
+        "3. $=\\frac{x^2}{2}+2x-\\arctan x+c$",
+      ] },
+    ], dx: [
+      facile(["Come una frazione \"impropria\" tipo $\\frac73=2+\\frac13$: prima tiro fuori la parte intera (il quoziente), poi resta una frazione con il numeratore più piccolo del denominatore."]),
+    ] },
+    { t: "box", titolo: "Grado di $D$ maggiore di 2: $\\int\\frac{x^2+5x-1}{x^3+x^2-2}dx$", righe: [
+      "1. $x=1$ annulla $D$; con Ruffini $D=(x-1)(x^2+2x+2)$, e $x^2+2x+2$ ha $\\Delta<0$",
+      "2. $\\frac{A}{x-1}+\\frac{Bx+C}{x^2+2x+2}$: sopra il fattore di 2° grado va $Bx+C$, non solo un numero",
+      "3. sommo e ordino il numeratore: $(A+B)x^2+(2A-B+C)x+(2A-C)=x^2+5x-1$",
+      "4. sistema: $A+B=1$, $2A-B+C=5$, $2A-C=-1$ $\\to$ $A=1$, $B=0$, $C=3$",
+      "5. resta $\\int\\frac{dx}{x-1}+3\\int\\frac{dx}{(x+1)^2+1}$ (quadrato completato: $x^2+2x+2=(x+1)^2+1$)",
+      "6. $=\\ln|x-1|+3\\arctan(x+1)+c$",
+    ] },
+    { t: "p", testo: "<b>\"Da fare ora\" del 25/11</b> (in fondo alla lavagna), svolti:" },
+    { t: "due", sx: [
+      { t: "box", titolo: "1. $\\int\\frac{x^2-3x}{x^2-6x+8}dx$", righe: [
+        "1. gradi uguali $\\to$ divido: $\\frac ND=1+\\frac{3x-8}{x^2-6x+8}$",
+        "2. $x^2-6x+8=(x-2)(x-4)$; $\\ 3x-8=A(x-4)+B(x-2)$",
+        "3. $x=2$: $-2=-2A$, $A=1$; $\\ x=4$: $4=2B$, $B=2$",
+        "4. $=x+\\ln|x-2|+2\\ln|x-4|+c$",
+      ] },
+      { t: "box", titolo: "3. $\\int\\frac{dx}{9x^2-6x+5}$", righe: [
+        "1. $\\Delta=36-180<0$: completo il quadrato, $9x^2-6x+5=(3x-1)^2+4$",
+        "2. $\\int\\frac{dx}{(3x-1)^2+2^2}$: come $\\frac1{t^2+k^2}$ con $t=3x-1$, $k=2$",
+        "3. $\\frac1k\\arctan\\frac tk$ e divido per il 3 davanti alla $x$",
+        "4. $=\\frac16\\arctan\\frac{3x-1}{2}+c$",
+      ] },
+    ], dx: [
+      { t: "box", titolo: "2. $\\int\\frac{x-3}{x^3-x^2-x+1}dx$", righe: [
+        "1. $D=x^2(x-1)-(x-1)=(x-1)^2(x+1)$: radice doppia $1$ e radice $-1$",
+        "2. $\\frac{A}{x-1}+\\frac{B}{(x-1)^2}+\\frac{C}{x+1}$",
+        "3. $x-3=A(x-1)(x+1)+B(x+1)+C(x-1)^2$",
+        "4. $x=1$: $-2=2B$, $B=-1$; $\\ x=-1$: $-4=4C$, $C=-1$",
+        "5. coefficiente di $x^2$: $0=A+C$, quindi $A=1$",
+        "6. $=\\ln|x-1|+\\frac{1}{x-1}-\\ln|x+1|+c$",
+      ] },
+      facile(["Nel n. 1 sulla lavagna il denominatore sembra \"$x^2-6x-18$\": il segno è un $+$ scritto di fretta. Con $+8$ si scompone in $(x-2)(x-4)$ e i conti tornano; se in classe era davvero $-18$, chiedi al prof."], "Occhio"),
+    ] },
 
     { t: "sez", testo: "8 · Trovare $c$ con una condizione" },
     facile(["Delle infinite primitive (la stessa curva spostata in su o in giù) ne voglio <b>una sola</b>: quella che passa per un punto dato. Il punto fissa l'altezza, cioè il valore di $c$."]),
@@ -330,6 +374,6 @@ module.exports = {
     ] },
 
     { t: "sez", testo: "11 · Correzioni agli appunti" },
-    { t: "p", testo: "• <b>12/10</b>: \"$\\alpha\\neq1$\" va scritto $\\alpha\\neq-1$; e la linearità è $\\int k\\,f(x)\\,dx=k\\int f(x)\\,dx$, non \"$\\int Kx\\,dx=K\\int x^{\\alpha}dx$\".<br>• <b>28/10</b>, $\\int x\\,e^{2x}dx$: nel secondo integrale $e^{2x}$ integrato dà $\\frac{e^{2x}}{2}$, non $e^{2x}$.<br>• <b>11/11</b>, $\\int(\\sqrt x+\\frac1{x^2})$: l'esercizio si ferma a $\\frac{x^{3/2}}{3/2}$; manca il secondo pezzo, $-\\frac1x$, e il $+c$. Anche in $3\\sin x-2e^x+4\\arctan x$ manca il $+c$.<br>• <b>18/11</b>: $\\int\\frac{x}{\\cos x}dx$ non si fa con i metodi del programma; probabilmente è $\\frac{x}{\\cos^2x}$. Anche sulla lavagna del 18/11 è scritto $\\frac{x}{\\cos x}$, quindi l'errore è del testo dato in classe: chiedi al prof. Nell'esercizio della primitiva per $P(-2;1)$ non vanno scritti gli estremi sull'integrale.<br>• <b>19/11</b>, $\\int\\frac1{x^2}dx$: non è $\\ln\\frac{x^3}{3}$ ma $-\\frac1x+c$.<br>• <b>19/11</b>, $\\int\\left(\\frac{6^x}{2^{x+1}}+2e^x\\right)dx$: $6^x$ non è $2\\cdot3x$ ma $2^x\\cdot3^x$, e un prodotto non si integra pezzo per pezzo. Risultato: $\\frac{3^x}{2\\ln3}+2e^x+c$. Se invece il testo era $6x$ (senza esponente), serve il metodo per parti.<br>• <b>19/11</b>, $\\int x\\sqrt{x^2+9}\\,dx$: manca il $\\frac12$ del trucco della costante; il risultato è $\\frac13\\sqrt{(x^2+9)^3}+c$, non $\\frac23$. In $\\frac{x^2}{2}+\\ln(x)$ manca il modulo: $\\ln|x|$.<br>• <b>Lavagna del 18/11</b>, $\\int(x+2)e^{-x}dx$: con $g=-e^{-x}$ il secondo pezzo è $-\\int(-e^{-x})\\cdot1\\,dx=+\\int e^{-x}dx$, non $-\\int e^{-x}dx$. Il risultato finale $-\\frac{x+3}{e^x}+c$ è comunque giusto." },
+    { t: "p", testo: "• <b>12/10</b>: \"$\\alpha\\neq1$\" va scritto $\\alpha\\neq-1$; e la linearità è $\\int k\\,f(x)\\,dx=k\\int f(x)\\,dx$, non \"$\\int Kx\\,dx=K\\int x^{\\alpha}dx$\".<br>• <b>28/10</b>, $\\int x\\,e^{2x}dx$: nel secondo integrale $e^{2x}$ integrato dà $\\frac{e^{2x}}{2}$, non $e^{2x}$.<br>• <b>11/11</b>, $\\int(\\sqrt x+\\frac1{x^2})$: l'esercizio si ferma a $\\frac{x^{3/2}}{3/2}$; manca il secondo pezzo, $-\\frac1x$, e il $+c$. Anche in $3\\sin x-2e^x+4\\arctan x$ manca il $+c$.<br>• <b>18/11</b>: $\\int\\frac{x}{\\cos x}dx$ non si fa con i metodi del programma; probabilmente è $\\frac{x}{\\cos^2x}$. Anche sulla lavagna del 18/11 è scritto $\\frac{x}{\\cos x}$, quindi l'errore è del testo dato in classe: chiedi al prof. Nell'esercizio della primitiva per $P(-2;1)$ non vanno scritti gli estremi sull'integrale.<br>• <b>19/11</b>, $\\int\\frac1{x^2}dx$: non è $\\ln\\frac{x^3}{3}$ ma $-\\frac1x+c$.<br>• <b>19/11</b>, $\\int\\left(\\frac{6^x}{2^{x+1}}+2e^x\\right)dx$: $6^x$ non è $2\\cdot3x$ ma $2^x\\cdot3^x$, e un prodotto non si integra pezzo per pezzo. Risultato: $\\frac{3^x}{2\\ln3}+2e^x+c$. Se invece il testo era $6x$ (senza esponente), serve il metodo per parti.<br>• <b>19/11</b>, $\\int x\\sqrt{x^2+9}\\,dx$: manca il $\\frac12$ del trucco della costante; il risultato è $\\frac13\\sqrt{(x^2+9)^3}+c$, non $\\frac23$. In $\\frac{x^2}{2}+\\ln(x)$ manca il modulo: $\\ln|x|$.<br>• <b>Lavagna del 18/11</b>, $\\int(x+2)e^{-x}dx$: con $g=-e^{-x}$ il secondo pezzo è $-\\int(-e^{-x})\\cdot1\\,dx=+\\int e^{-x}dx$, non $-\\int e^{-x}dx$. Il risultato finale $-\\frac{x+3}{e^x}+c$ è comunque giusto.<br>• <b>Lavagna del 25/11</b>, sistema per $A$, $B$, $C$: il segno davanti a $B$ nella seconda equazione è cancellato; quello giusto è $2A-B+C=5$. Con $B=0$ il risultato non cambia." },
   ],
 };

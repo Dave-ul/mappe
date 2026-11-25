@@ -89,6 +89,12 @@ CASI = [
     ("23/11 D=0 (2x-3)/(x^2-4x+4)", (2*x - 3)/(x**2 - 4*x + 4), 2*log(x - 2) - 1/(x - 2), 3),
     ("23/11 D<0 2x/(x^2+4x+5)", 2*x/(x**2 + 4*x + 5), log(x**2 + 4*x + 5) - 4*atan(x + 2), 2),
     ("n. 508 (3x-5)/(x^2-2x-3)", (3*x - 5)/(x**2 - 2*x - 3), 2*log(x + 1) + log(x - 3), 4),
+    # Lavagna del 25/11 (chiavetta): divisione e denominatore di 3° grado, poi i tre "da fare ora"
+    ("L25 divisione", (x**3 + 2*x**2 + x + 1)/(x**2 + 1), x**2/2 + 2*x - atan(x), 2),
+    ("L25 D di 3° grado", (x**2 + 5*x - 1)/(x**3 + x**2 - 2), log(x - 1) + 3*atan(x + 1), 2),
+    ("L25 n.1 (x^2-3x)/(x^2-6x+8)", (x**2 - 3*x)/(x**2 - 6*x + 8), x + log(x - 2) + 2*log(x - 4), 5),
+    ("L25 n.2 (x-3)/(x^3-x^2-x+1)", (x - 3)/(x**3 - x**2 - x + 1), log(x - 1) + 1/(x - 1) - log(x + 1), 2),
+    ("L25 n.3 1/(9x^2-6x+5)", 1/(9*x**2 - 6*x + 5), atan((3*x - 1)/2)/6, 2),
 ]
 
 # Problemi con condizioni: (nome, funzione trovata, derivata attesa, [(punto, valore atteso)])

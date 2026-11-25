@@ -125,6 +125,54 @@ k_e2 = pend * 5 / k_me2
 ok("es. 2: k_e = 0,0456 V/(giri/min)", vicino(k_e2, 0.0456, 1e-3))
 ok("es. 2: controllo con la maglia I = (24 - k_e n)/R", vicino((24 - k_e2 * n2) / 5, I2, 1e-6))
 
+# --- Dispense Classroom (2026-11-25): L298 con PWM, passo-passo, A/D, TMP36, codice Gray ---
+# §17 PWM: potenziometro a metà -> map(512, 0, 1023, 0, 255) = 127 (divisione intera di Arduino)
+x_pwm = 512 * 255 // 1023
+ok("PWM: map(512) = 127", x_pwm == 127)
+ok("PWM: D ~ 0,5 e V_media ~ 6 V a 12 V", vicino(sp.Rational(x_pwm, 255), 0.498, 1e-2) and vicino(sp.Rational(x_pwm, 255) * 12, 5.98, 1e-2))
+# §18 passo-passo: 48 passi/giro, delay 10 ms tra le fasi
+ok("passo: 360/48 = 7,5 gradi", sp.Rational(360, 48) == sp.Rational(15, 2))
+ok("passo: 200 passi -> 1,8 gradi", sp.Rational(360, 200) == sp.Rational(9, 5))
+f_passi = 1 / sp.Rational(10, 1000)
+ok("passo: 100 passi/s -> 125 giri/min", f_passi == 100 and 60 * f_passi / 48 == 125)
+# §20 A/D a 10 bit, 5 V: q = 4,88 mV; 1,75 V -> 358 = 0101100110 = 166H
+q = sp.Rational(5, 1024)
+ok("A/D: q = 4,88 mV", vicino(q * 1000, 4.88, 1e-3))
+N = int(sp.floor(sp.Rational(175, 100) / q))
+ok("A/D: N(1,75 V) = 358", N == 358 and vicino(sp.Rational(175, 100) / q, 358.4, 1e-3))
+ok("A/D: 358 = 0101100110 = 166H", format(N, "010b") == "0101100110" and format(N, "X") == "166")
+ok("A/D: 256+64+32+4+2 = 358", 256 + 64 + 32 + 4 + 2 == 358)
+ok("A/D: 358 q = 1,747 V", vicino(N * q, 1.748, 1e-3))
+# §21 TMP36: V = 0,5 + 0,01 T  <->  T = 100 V - 50
+Tt, Vt = sp.symbols("T V")
+ok("TMP36: retta inversa T = 100 V - 50", sp.simplify(sp.solve(sp.Eq(Vt, sp.Rational(1, 2) + Tt / 100), Tt)[0] - (100 * Vt - 50)) == 0)
+T36 = lambda v: 100 * v - 50
+ok("TMP36: 1 V -> 50 C, 0,55 V -> 5 C, 0,75 V -> 25 C", T36(1) == 50 and T36(sp.Rational(55, 100)) == 5 and T36(sp.Rational(3, 4)) == 25)
+ok("TMP36: -40 C -> 0,1 V, 125 C -> 1,75 V", sp.Rational(1, 2) + sp.Rational(-40, 100) == sp.Rational(1, 10) and sp.Rational(1, 2) + sp.Rational(125, 100) == sp.Rational(7, 4))
+ok("TMP36: N = 154 -> 0,752 V -> 25,2 C", vicino(154 * q, 0.752, 1e-3) and vicino(T36(154 * q), 25.2, 1e-3))
+ok("TMP36: risoluzione 0,49 C, con guadagno 2 0,24 C", vicino(q / sp.Rational(1, 100), 0.488, 1e-2) and vicino(q / sp.Rational(2, 100), 0.244, 1e-2))
+ok("TMP36: con guadagno 2 l'uscita resta sotto 5 V (3,5 V)", 2 * sp.Rational(7, 4) == sp.Rational(7, 2) and 2 * sp.Rational(7, 4) < 5)
+ok("1023 e 1024 differiscono dello 0,1%", vicino(sp.Rational(1024, 1023) - 1, 0.000978, 1e-2))
+# §25 codice Gray
+gray = lambda b: b ^ (b >> 1)
+def da_gray(g):
+    b = 0
+    while g:
+        b ^= g
+        g >>= 1
+    return b
+ok("Gray 3 bit: 000 001 011 010 110 111 101 100", [format(gray(i), "03b") for i in range(8)] == ["000", "001", "011", "010", "110", "111", "101", "100"])
+ok("Gray: cambia un bit solo, anche da 7 a 0", all(bin(gray(i) ^ gray((i + 1) % 8)).count("1") == 1 for i in range(8)))
+ok("binario 0110 -> Gray 0101", format(gray(0b0110), "04b") == "0101")
+ok("Gray 101011 -> binario 110010", format(da_gray(0b101011), "06b") == "110010")
+ok("da 3 a 4: tre bit in binario, uno in Gray (010 -> 110)", bin(3 ^ 4).count("1") == 3 and format(gray(3), "03b") == "010" and format(gray(4), "03b") == "110")
+# §24 verso: con A in anticipo di T/4 su B, quando A cambia, B ha ancora il valore vecchio -> A e B diversi
+def onda(t, ritardo):
+    return 1 if ((t - ritardo) % 4) < 2 else 0
+fronti_A = [t for t in range(1, 8) if onda(t, 0) != onda(t - 1, 0)]
+ok("A in anticipo: a ogni cambio di A, A e B sono diversi", all(onda(t, 0) != onda(t, 1) for t in fronti_A))
+ok("B in anticipo: a ogni cambio di A, A e B sono uguali", all(onda(t, 0) == onda(t, -1) for t in fronti_A))
+
 for nome, esito in controlli:
     print(("OK  " if esito else "NO  ") + nome)
 print(f"{sum(e for _, e in controlli)}/{len(controlli)}")
