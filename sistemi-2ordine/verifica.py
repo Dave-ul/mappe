@@ -96,6 +96,34 @@ xir = 100 / 2 * math.sqrt(1e-6 / 10e-3)
 ok("RLC esempio: wn = 10000 rad/s, xi = 0,5", vicino(wnr, 10000) and vicino(xir, 0.5))
 ok("RLC: R critica = 2 sqrt(L/C) = 200 ohm", vicino(2 * math.sqrt(10e-3 / 1e-6), 200))
 
+# Esercizi del libro, pagine 488-489 (screenshot bsmart, doppia_0039)
+# 1. (s+2)/(s^3+2s^2+5s): poli 0 e -1 ± j2, wn = sqrt(5), xi = 1/sqrt(5)
+poli1 = sp.solve(s**3 + 2 * s**2 + 5 * s, s)
+ok("libro es. 1: poli 0, -1 ± j2", set(poli1) == {0, -1 + 2 * sp.I, -1 - 2 * sp.I})
+ok("libro es. 1: wn = sqrt 5, xi = 1/sqrt 5 = 0,447",
+   sp.simplify(2 * (1 / sp.sqrt(5)) * sp.sqrt(5) - 2) == 0 and vicino(1 / math.sqrt(5), 0.447))
+ok("libro es. 1: poli = wn(-xi ± j sqrt(1-xi^2))",
+   sp.simplify(sp.sqrt(5) * (-1 / sp.sqrt(5) + sp.I * sp.sqrt(1 - sp.Rational(1, 5))) - (-1 + 2 * sp.I)) == 0)
+# 2. R1 // L in serie, poi R2 // C verso massa, uscita su C
+R1, R2 = sp.symbols("R1 R2", positive=True)
+Z1 = R1 * s * L / (R1 + s * L)
+Z2 = R2 / (1 + s * R2 * C)
+G2 = sp.simplify(Z2 / (Z1 + Z2))
+G2_attesa = (s * R2 * L + R1 * R2) / (s**2 * L * C * R1 * R2 + s * L * (R1 + R2) + R1 * R2)
+ok("libro es. 2: G = (sR2L + R1R2)/(s^2 LC R1R2 + sL(R1+R2) + R1R2)", sp.simplify(G2 - G2_attesa) == 0)
+# 3. denominatore diviso per LC R1 R2: s^2 + s (R1+R2)/(C R1 R2) + 1/(LC); con L = C = 1: wn = 1, xi = 1/(2 R1//R2)
+den3 = sp.expand((s**2 * L * C * R1 * R2 + s * L * (R1 + R2) + R1 * R2) / (L * C * R1 * R2))
+ok("libro es. 3: forma generale del denominatore",
+   sp.simplify(den3 - (s**2 + s * (R1 + R2) / (C * R1 * R2) + 1 / (L * C))) == 0)
+parallelo = R1 * R2 / (R1 + R2)
+xi3 = sp.simplify((R1 + R2) / (R1 * R2) / 2)
+ok("libro es. 3: xi = 1/(2 R1//R2) con L = C = 1", sp.simplify(xi3 - 1 / (2 * parallelo)) == 0)
+ok("libro es. 3: xi = 1 con R1 = R2 = 1 ohm (R1//R2 = 0,5)", xi3.subs({R1: 1, R2: 1}) == 1)
+# 4. impulso su 16/(s^2+8s+16) = 16/(s+4)^2 -> 16 t e^(-4t), caso critico wn = 4, xi = 1
+u4 = sp.inverse_laplace_transform(16 / (s**2 + 8 * s + 16), s, t)
+ok("libro es. 4: u(t) = 16 t e^(-4t)", sp.simplify(u4 - 16 * t * sp.exp(-4 * t) * sp.Heaviside(t)) == 0)
+ok("libro es. 4 e quesito 2: wn = 4, xi = 1", sp.sqrt(16) == 4 and sp.Rational(8, 2 * 4) == 1)
+
 for nome, esito in controlli:
     print(("OK  " if esito else "NO  ") + nome)
 print(f"{sum(e for _, e in controlli)}/{len(controlli)}")

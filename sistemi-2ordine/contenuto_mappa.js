@@ -1,5 +1,6 @@
 // Mappa di Sistemi Automatici sui sistemi del secondo ordine: 1 foglio A4 fronte-retro, da ricopiare a mano.
-// Fonti: libro, Modulo H, Unità H2 "Sistemi di secondo ordine" (foto nella cartella di classe "5E collab", 19/11),
+// Fonti: libro, Modulo H, Unità H2 "Sistemi di secondo ordine", pagine 481-487 (foto della cartella di classe "5E collab"
+// del 19/11; confrontate il 25/11 con gli screenshot bsmart del libro intero, doppie 35-38: nessuna differenza),
 // e quaderno Saber 5/11 (perché sono importanti, RLC e massa-molla) e 12/11 (forma generale, poli, tre casi, gradino).
 // Il 13/11 il prof ha detto di leggere il libro. Formule verificate con verifica.py.
 

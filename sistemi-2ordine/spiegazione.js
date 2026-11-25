@@ -1,6 +1,7 @@
 // Spiegazione dei sistemi del secondo ordine (Sistemi Automatici), nello stile "spiegato semplice" delle altre:
 // basi all'inizio, riquadri gialli con un paragone, esempi passo per passo, errori in fondo.
-// Fonti: libro, Unità H2 (foto nella cartella di classe "5E collab", 19/11); quaderno Saber 5/11, 12/11, 13/11.
+// Fonti: libro, Unità H2, pagine 481-489 (foto della cartella di classe "5E collab" del 19/11, poi screenshot bsmart del 25/11
+// in Fonti/Sistemi Automatici/Libri/.../Screenshot, doppie 35-39); quaderno Saber 5/11, 12/11, 13/11.
 // Formule ed esempi controllati da verifica.py.
 const img = (nome, alto) => `<img src="img/${nome}.svg" style="height:${alto}mm;max-width:100%;object-fit:contain;display:block;margin:2mm auto">`;
 const facile = (righe, titolo = "Detto semplice") => ({ t: "box", tipo: "facile", titolo, righe });
@@ -186,7 +187,37 @@ module.exports = {
       ] },
     ] },
 
-    { t: "sez", testo: "10 · Domande tipiche" },
+    { t: "sez", testo: "10 · Esercizi del libro (Unità H2, esercitazioni)" },
+    { t: "p", testo: "Gli esercizi alla fine dell'unità, svolti. Prova prima da solo coprendo la soluzione." },
+    { t: "due", sx: [
+      { t: "box", titolo: "Es. 1: poli, $\\omega_n$ e $\\xi$ di $\\frac{s+2}{s^3+2s^2+5s}$", righe: [
+        "1. raccolgo $s$: $\\frac{s+2}{s\\,(s^2+2s+5)}$ → un polo in $p=0$",
+        "2. $\\omega_n^2=5$ → $\\omega_n=\\sqrt5\\approx2{,}24$",
+        "3. $2\\xi\\sqrt5=2$ → $\\xi=\\frac{1}{\\sqrt5}\\approx0{,}447$: sottosmorzato",
+        "4. poli $p_{1,2}=-1\\pm j2$ (controllo: $\\omega_n(-\\xi\\pm j\\sqrt{1-\\xi^2})=-1\\pm j2$)",
+      ] },
+      { t: "box", titolo: "Es. 4: risposta all'impulso di $\\frac{16}{s^2+8s+16}$", righe: [
+        "1. impulso: $U(s)=1\\cdot G(s)$",
+        "2. $\\omega_n=4$, $\\xi=\\frac{8}{2\\cdot4}=1$: caso critico, $s^2+8s+16=(s+4)^2$",
+        "3. $u(t)=\\mathcal L^{-1}\\left\\{\\frac{16}{(s+4)^2}\\right\\}=16\\,t\\,e^{-4t}$",
+        "4. è la formula del caso $\\xi=1$: $\\omega_n^2\\,t\\,e^{-\\omega_n t}$",
+      ] },
+    ], dx: [
+      { t: "box", titolo: "Es. 2-3: $R_1\\parallel L$ in serie, $R_2\\parallel C$ verso massa, uscita su $C$", righe: [
+        "1. $Z_1=R_1\\parallel sL=\\frac{sLR_1}{sL+R_1}$, $\\;Z_2=R_2\\parallel\\frac{1}{sC}=\\frac{R_2}{1+sR_2C}$",
+        "2. partitore: $G=\\frac{Z_2}{Z_1+Z_2}=\\frac{sR_2L+R_1R_2}{s^2LCR_1R_2+sL(R_1+R_2)+R_1R_2}$",
+        "3. divido il denominatore per $LCR_1R_2$: $s^2+s\\frac{R_1+R_2}{CR_1R_2}+\\frac{1}{LC}$",
+        "4. con $L=C=1$: $\\omega_n=1$ e $2\\xi=\\frac{R_1+R_2}{R_1R_2}$ → $\\xi=\\frac12\\cdot\\frac{1}{R_1\\parallel R_2}$",
+        "5. $\\xi=1$ → $R_1\\parallel R_2=0{,}5$ → $R_1=R_2=1\\,\\Omega$",
+      ] },
+      { t: "box", tipo: "occhio", titolo: "Quesiti a scelta multipla", righe: [
+        "<b>1.</b> b, d: due elementi reattivi <b>indipendenti</b>; $\\omega_n$ è la pulsazione del moto libero. Due condensatori in parallelo fanno un condensatore solo.",
+        "<b>2.</b> a, d: $\\frac{16}{s^2+8s+16}$ ha $\\omega_n=4$ e $\\xi=1$, risposta critica (non oscilla).",
+        "<b>3.</b> a, d: con $\\xi>1$ niente sovraelongazione; con $0<\\xi<1$ oscilla. Il 50% del regime è $T_D$, non il tempo di salita.",
+      ] },
+    ] },
+
+    { t: "sez", testo: "11 · Domande tipiche" },
     { t: "tab", intest: ["domanda", "dove guardare"], larghezze: ["55%", "45%"], righe: [
       ["Perché un sistema oscilla? Cosa vuol dire secondo ordine?", "§2: due accumulatori di energia"],
       ["Cosa sono $\\xi$ e $\\omega_n$?", "§3"],
@@ -197,9 +228,10 @@ module.exports = {
       ["Definisci $T_D$, $T_R$, $T_P$, $T_S$, sovraelongazione", "§9"],
       ["Calcola $T_P$, $T_S$ e $M_{max}\\%$", "§9: formule ed esempio"],
       ["Quando il sistema è instabile?", "§6: $\\xi<0$, poli con parte reale positiva"],
+      ["Esercizi del libro con le soluzioni", "§10"],
     ] },
 
-    { t: "sez", testo: "11 · Correzioni agli appunti e al libro" },
+    { t: "sez", testo: "12 · Correzioni agli appunti e al libro" },
     { t: "p", testo: "• <b>Quaderno 12/11, pagina 4</b>: accanto alla curva sottosmorzata c'è \"più instabile ma pronto\". Con $0<\\xi<1$ il sistema è <b>stabile</b> (la risposta si assesta): oscilla di più ed è meno smorzato, ma non è instabile. Instabile è solo con $\\xi<0$.<br>• <b>Libro</b>: dice che $T_S$ si misura con la fascia del 2% o del 5%, ma $T_S=\\frac{3}{\\xi\\omega_n}$ vale per il 5% (l'esponenziale scende al 5% dopo $\\frac{\\ln 20}{\\xi\\omega_n}\\approx\\frac{3}{\\xi\\omega_n}$); per il 2% serve circa $\\frac{4}{\\xi\\omega_n}$.<br>• <b>Libro</b>: \"la risposta allo scalino presenta esattamente le stesse caratteristiche della risposta all'impulso\" va preso con le pinze: il tipo di comportamento (smorzato o oscillante) dipende da $\\xi$ allo stesso modo, ma le curve sono diverse (il gradino sale e si ferma al valore finale, l'impulso torna a 0).<br>• <b>Libro, metodo per $\\omega_n$, $\\xi$, $K$</b>: funziona solo se il coefficiente di $s^2$ è 1; nell'esempio RLC il libro infatti divide prima per $LC$." },
   ],
 };
