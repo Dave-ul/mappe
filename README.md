@@ -11,6 +11,8 @@ Mappe di formule da ricopiare a mano e portare in verifica e all'esame di Stato 
 | `tpsee2/` | `~/Documenti/Scuola/Mappe/Mappa_TPSEE_2.pdf` | secondo foglio TPSEE: encoder e motore in c.c. dinamico (Laplace, schema a blocchi, collaudo), dal libro (foto della classe); schemi SVG in `img/` usati anche dalla spiegazione di `tpsee/`, `verifica.py` |
 | `sistemi-2ordine/` | `~/Documenti/Scuola/Mappe/Mappa_sistemi_secondo_ordine.pdf` | Sistemi Automatici, sistemi del secondo ordine (libro Hoepli Unità H2 + quaderno 5/11 e 12/11); spiegazione con gli esercizi del libro, grafici calcolati in `img/`, `verifica.py` |
 | `laboratorio/` | `~/Documenti/Scuola/Mappe/Mappa_laboratorio_elettronica.pdf` | laboratorio di elettronica dal quaderno (foto) e dalle slide del prof; spiegazione, schemi SVG in `img/` (amplificatori da `disegna_circuiti.py`), `verifica.py` |
+| `studio-funzione/` | `~/Documenti/Scuola/Mappe/Mappa_studio_di_funzione.pdf` | Matematica, foglio 1 (la procedura: dominio, asintoti, $f'$, $f''$, non derivabilità, discontinuità); spiegazione, grafici calcolati da `grafici.py` in `img/` (anche quelli del foglio 2), `verifica.py` per tutti e due i fogli |
+| `studio-funzione2/` | `~/Documenti/Scuola/Mappe/Mappa_studio_di_funzione_2.pdf` | foglio 2 dello studio di funzione: derivate, limiti, forme indeterminate, disequazioni irrazionali, grafici elementari |
 
 In comune nella radice:
 
@@ -35,6 +37,8 @@ Uso:
     venv/bin/python -I laboratorio/verifica.py
     venv/bin/python -I tpsee2/verifica.py
     venv/bin/python -I sistemi-2ordine/verifica.py
+    venv/bin/python -I studio-funzione/verifica.py
+    venv/bin/python -I studio-funzione/grafici.py
     venv/bin/python -I strumenti/saber.py stato
     venv/bin/python -I strumenti/saber.py aggiorna
 
