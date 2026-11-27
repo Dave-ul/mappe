@@ -2,7 +2,8 @@
 // Fonti: libro, Modulo H, Unità H2 "Sistemi di secondo ordine", pagine 481-487 (foto della cartella di classe "5E collab"
 // del 19/11; confrontate il 25/11 con gli screenshot bsmart del libro intero, doppie 35-38: nessuna differenza),
 // e quaderno Saber 5/11 (perché sono importanti, RLC e massa-molla) e 12/11 (forma generale, poli, tre casi, gradino).
-// Il 13/11 il prof ha detto di leggere il libro. Formule verificate con verifica.py.
+// Il 13/11 il prof ha detto di leggere il libro. Dal 27/11 fa da traccia per il discorso dell'interrogazione su G e H
+// (secondo foglio dopo sistemi-laplace/): riquadri nell'ordine in cui si espone. Formule verificate con verifica.py.
 
 const img = (nome, alto) => `<img src="img/${nome}.svg" style="height:${alto}mm">`;
 
@@ -11,13 +12,14 @@ const facciate = [
     titolo: "Sistemi · secondo ordine: f.d.t. e poli",
     sezioni: [
       {
-        titolo: "1. Funzione di trasferimento",
+        titolo: "H2 · Funzione di trasferimento",
         box: [
           {
             mem: true, h: "Idea", w: 3,
             b: [
               "2 accumulatori di energia (L e C, molla e massa)",
               "si rimpallano l'energia → oscillazioni",
+              "risonanza → danni → controllo",
               "$\\xi$ smorzamento",
               "$\\omega_n$ pulsazione naturale (evoluzione libera)",
             ],
@@ -47,7 +49,7 @@ const facciate = [
         ],
       },
       {
-        titolo: "2. Poli e smorzamento",
+        titolo: "H2 · Poli e smorzamento",
         box: [
           {
             mem: true, h: "Poli", w: 6,
@@ -63,6 +65,7 @@ const facciate = [
               ["$\\xi=0$", "immaginari", "non smorzato: oscillazioni persistenti"],
               ["$\\xi<0$", "parte reale positiva", "divergente: instabile"],
             ],
+            dopo: ["stabile ⇔ parte reale dei poli $<0$ ⇔ $\\xi>0$"],
           },
         ],
       },
@@ -72,7 +75,7 @@ const facciate = [
     titolo: "Sistemi · secondo ordine: risposte",
     sezioni: [
       {
-        titolo: "3. Risposta all'impulso: U(s) = 1 · G(s), con K = 1",
+        titolo: "H2 · Risposta all'impulso: U(s) = 1 · G(s), con K = 1",
         box: [
           {
             mem: true, h: "Tre casi, tutti → 0", w: 6, da: "antitrasformata, fratti semplici",
@@ -81,15 +84,16 @@ const facciate = [
               "$\\xi=1$: $u(t)=\\omega_n^2\\,t\\,e^{-\\omega_n t}$",
               "$0<\\xi<1$: $u(t)=\\frac{\\omega_n}{\\sqrt{1-\\xi^2}}\\,e^{-\\xi\\omega_n t}\\,\\sin\\left(\\omega_n\\sqrt{1-\\xi^2}\\,t\\right)$",
             ],
+            dopo: ["$\\omega_d=\\omega_n\\sqrt{1-\\xi^2}$ · seno = oscillazione · $e^{-\\xi\\omega_n t}$ = inviluppo"],
           },
         ],
       },
       {
-        titolo: "4. Risposta al gradino unitario",
+        titolo: "H2 · Risposta al gradino unitario",
         box: [
           {
             mem: true, h: "Al variare di $\\xi$", w: 3,
-            b: [img("risposte", 44), "$\\xi$ cala → più pronta, più oscillazioni"],
+            b: [img("risposte", 44), "$\\xi$ cala → più pronta, più oscillazioni", "compromesso $\\xi\\approx0{,}707$"],
           },
           {
             mem: true, h: "Specifiche", w: 3,
@@ -112,6 +116,7 @@ const facciate = [
               ["$T_S$ assestamento", "entra nella fascia ±5% (o 2%)", "$T_S=\\frac{3}{\\xi\\omega_n}$ (5%)"],
               ["$M_{max}\\%$", "$\\frac{U_{max}-U_F}{U_F}\\cdot100$", "$100\\,e^{-\\pi\\xi/\\sqrt{1-\\xi^2}}$"],
             ],
+            dopo: ["$M_{max}$ dipende solo da $\\xi$ · $T_S$ da $\\xi\\omega_n$"],
           },
         ],
       },

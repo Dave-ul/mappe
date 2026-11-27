@@ -45,7 +45,7 @@ class Saber(unittest.TestCase):
                          "trap 'kill $! 2>/dev/null; exit 0' TERM\nsleep 30 & wait\n")
         finto.chmod(0o755)
         self.env = dict(os.environ, SCUOLA_DIR=str(self.scuola), SABER_DIR=str(self.saber),
-                        SABER_BACKUP_DIR=str(self.backup), SABER_CMD=str(finto), SABER_ATTESA="0.5",
+                        SABER_BACKUP_DIR=str(self.backup), SABER_CMD=str(finto), SABER_ATTESA="0.5", SABER_QUIETE="1",
                         SABER_ELENCO=str(self.elenco))
 
     def tearDown(self):
@@ -141,6 +141,25 @@ class Saber(unittest.TestCase):
         self.assertEqual(copie[0].read_bytes(), vecchia)
         self.assertIn(sha(self.pdf_dir / "Mappa_prova.pdf"), self.elenco.read_text())
         self.assertEqual(self.lancia("stato").returncode, 0)
+
+    def test_sync_aspetta_la_fine_del_caricamento(self):
+        """Saber va chiuso solo quando smette di inviare dati, non dopo un'attesa fissa (2026-11-27)."""
+        lento = self.t / "saber-lento"
+        dati, finiti = self.t / "dati", self.t / "finiti"
+        lento.write_text(f'#!/bin/bash\necho avvio >> "{self.registro}"\n'
+                         "trap 'kill $! 2>/dev/null; exit 0' TERM\n"
+                         f'for i in $(seq 1 15); do echo caricamento >> "{dati}"; sleep 0.2; done\n'
+                         f'echo fine >> "{finiti}"\nsleep 30 & wait\n')
+        lento.chmod(0o755)
+        self.env["SABER_CMD"] = str(lento)
+        pdf(self.pdf_dir / "Mappa_prova.pdf", 1)
+        self.elenca(("Mappe/Mappa_prova.pdf", NOTA, ""))
+        esito = self.lancia("aggiorna")
+        subprocess.run(["pkill", "-x", "saber-lento"], capture_output=True)
+        self.assertEqual(esito.returncode, 0, esito.stdout + esito.stderr)
+        self.assertEqual(self.avvii(), 2)
+        fatti = len(finiti.read_text().splitlines()) if finiti.exists() else 0
+        self.assertEqual(fatti, 2, "Saber chiuso mentre stava ancora caricando")
 
     def test_nota_nuova(self):
         pdf(self.pdf_dir / "Mappa_prova.pdf", 1)

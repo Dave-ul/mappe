@@ -9,7 +9,8 @@ Mappe di formule da ricopiare a mano e portare in verifica e all'esame di Stato 
 | `inglese-unit13-15/` | `~/Documenti/Scuola/Mappe/Mappa_inglese_unit13-15.pdf` | Electronics, Unit 13 e 15; spiegazione |
 | `tpsee/` | `~/Documenti/Scuola/Mappe/Mappa_TPSEE.pdf` | TPSEE (motore in c.c., basi, passo-passo, acquisizione), solo appunti Saber; spiegazione, schemi SVG in `img/`, `verifica.py` |
 | `tpsee2/` | `~/Documenti/Scuola/Mappe/Mappa_TPSEE_2.pdf` | secondo foglio TPSEE: encoder e motore in c.c. dinamico (Laplace, schema a blocchi, collaudo), dal libro (foto della classe); schemi SVG in `img/` usati anche dalla spiegazione di `tpsee/`, `verifica.py` |
-| `sistemi-2ordine/` | `~/Documenti/Scuola/Mappe/Mappa_sistemi_secondo_ordine.pdf` | Sistemi Automatici, sistemi del secondo ordine (libro Hoepli Unità H2 + quaderno 5/11 e 12/11); spiegazione con gli esercizi del libro, grafici calcolati in `img/`, `verifica.py` |
+| `sistemi-2ordine/` | `~/Documenti/Scuola/Mappe/Mappa_sistemi_secondo_ordine.pdf` | Sistemi Automatici, sistemi del secondo ordine (libro Hoepli Unità H2 + quaderno 5/11 e 12/11); spiegazione unica per l'interrogazione su Moduli G e H (comincia con `sistemi-laplace/spiegazione_g_h1.js`) con gli esercizi del libro, grafici calcolati in `img/`, `verifica.py` |
+| `sistemi-laplace/` | `~/Documenti/Scuola/Mappe/Mappa_sistemi_laplace.pdf` | Sistemi Automatici, primo foglio per l'interrogazione su Moduli G e H: Laplace (G1, G2) e f.d.t. con risposte (H1), dal libro Hoepli; ordinato come il discorso, `verifica.py`. Il secondo foglio è `sistemi-2ordine/` (H2); H3 manca. `spiegazione_g_h1.js` (G1, G2, H1, grafici da `grafici.py` in `img/`) è la prima parte della spiegazione di `sistemi-2ordine/` |
 | `laboratorio/` | `~/Documenti/Scuola/Mappe/Mappa_laboratorio_elettronica.pdf` | laboratorio di elettronica dal quaderno (foto) e dalle slide del prof; spiegazione, schemi SVG in `img/` (amplificatori da `disegna_circuiti.py`), `verifica.py` |
 | `studio-funzione/` | `~/Documenti/Scuola/Mappe/Mappa_studio_di_funzione.pdf` | Matematica, foglio 1 (la procedura: dominio, asintoti, $f'$, $f''$, non derivabilità, discontinuità); spiegazione, grafici calcolati da `grafici.py` in `img/` (anche quelli del foglio 2), `verifica.py` per tutti e due i fogli |
 | `studio-funzione2/` | `~/Documenti/Scuola/Mappe/Mappa_studio_di_funzione_2.pdf` | foglio 2 dello studio di funzione: derivate, limiti, forme indeterminate, disequazioni irrazionali, grafici elementari |
@@ -37,6 +38,8 @@ Uso:
     venv/bin/python -I laboratorio/verifica.py
     venv/bin/python -I tpsee2/verifica.py
     venv/bin/python -I sistemi-2ordine/verifica.py
+    venv/bin/python -I sistemi-laplace/verifica.py
+    venv/bin/python -I sistemi-laplace/grafici.py
     venv/bin/python -I studio-funzione/verifica.py
     venv/bin/python -I studio-funzione/grafici.py
     venv/bin/python -I strumenti/saber.py stato

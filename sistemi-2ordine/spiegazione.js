@@ -1,36 +1,22 @@
-// Spiegazione dei sistemi del secondo ordine (Sistemi Automatici), nello stile "spiegato semplice" delle altre:
-// basi all'inizio, riquadri gialli con un paragone, esempi passo per passo, errori in fondo.
+// Spiegazione di Sistemi Automatici per l'interrogazione sui Moduli G e H, nello stile "spiegato semplice" delle altre:
+// riquadri gialli con un paragone, esempi passo per passo, errori in fondo.
+// Dal 2026-11-27 comincia con G1, G2 e H1 (sistemi-laplace/spiegazione_g_h1.js, §1-12); qui c'è H2 (§13-21).
 // Fonti: libro, Unità H2, pagine 481-489 (foto della cartella di classe "5E collab" del 19/11, poi screenshot bsmart del 25/11
 // in Fonti/Sistemi Automatici/Libri/.../Screenshot, doppie 35-39); quaderno Saber 5/11, 12/11, 13/11.
 // Formule ed esempi controllati da verifica.py.
 const img = (nome, alto) => `<img src="img/${nome}.svg" style="height:${alto}mm;max-width:100%;object-fit:contain;display:block;margin:2mm auto">`;
 const facile = (righe, titolo = "Detto semplice") => ({ t: "box", tipo: "facile", titolo, righe });
+const laplaceEFdt = require("../sistemi-laplace/spiegazione_g_h1.js");
 
 module.exports = {
-  titolo: "Sistemi del secondo ordine",
+  titolo: "Sistemi automatici: Laplace, f.d.t. e secondo ordine",
   blocchi: [
-    { t: "titolo", testo: "Sistemi del secondo ordine, spiegati semplice",
-      sotto: "Sistemi Automatici · libro, Unità H2, e quaderno del 5/11 e 12/11 · giallo = detto semplice, per capire · bordo spesso = da sapere a memoria" },
-    { t: "p", testo: "Come leggerla: prima il riquadro <b>giallo</b>, che spiega l'idea con un paragone; poi le formule nel riquadro a <b>bordo spesso</b>, che vanno sapute; poi gli <b>esempi</b> con i numeri, passo per passo. Il 13/11 il prof ha detto di leggere il libro: qui c'è tutto quello che dice, con le correzioni in fondo." },
+    { t: "titolo", testo: "Laplace, funzioni di trasferimento e secondo ordine, spiegati semplice",
+      sotto: "Sistemi Automatici · libro, Moduli G e H (G1, G2, H1, H2), e quaderno del 5/11 e 12/11 · giallo = detto semplice, per capire · bordo spesso = da sapere a memoria" },
+    { t: "p", testo: "Come leggerla: prima il riquadro <b>giallo</b>, che spiega l'idea con un paragone; poi le formule nel riquadro a <b>bordo spesso</b>, che vanno sapute; poi gli <b>esempi</b> con i numeri, passo per passo. Le parti seguono l'ordine del libro, che è anche l'ordine in cui raccontarle all'interrogazione; le correzioni al libro e al quaderno sono in fondo." },
+    ...laplaceEFdt,
 
-    { t: "sez", testo: "1 · Prima di cominciare: f.d.t., poli, impulso e gradino" },
-    { t: "tab", intest: ["parola", "cosa vuol dire"], larghezze: ["26%", "74%"], righe: [
-      ["<b>funzione di trasferimento</b> $G(s)$", "uscita diviso ingresso, nel mondo di Laplace: $G(s)=\\frac{U(s)}{I(s)}$. Dice come il sistema trasforma qualunque ingresso"],
-      ["<b>poli</b>", "i valori di $s$ che annullano il <b>denominatore</b> di $G(s)$. Decidono come si muove il sistema"],
-      ["<b>impulso</b> unitario", "un colpo secco e brevissimo. In Laplace vale $I(s)=1$"],
-      ["<b>gradino</b> unitario", "l'ingresso passa di colpo da 0 a 1 e resta lì (come accendere un interruttore). In Laplace vale $I(s)=\\frac1s$"],
-      ["<b>ordine</b>", "il grado del denominatore: secondo ordine = c'è $s^2$"],
-    ] },
-    { t: "due", sx: [
-      { t: "box", tipo: "memo", titolo: "Come si calcola una f.d.t.", righe: [
-        "1. scrivo l'uscita in funzione dell'ingresso",
-        "2. divido tutto per l'ingresso",
-      ] },
-    ], dx: [
-      facile(["Dare un <b>impulso</b> è come dare un colpo a una campana e ascoltare come suona: il suono che senti dopo è la \"firma\" della campana. Per questo il libro studia prima la risposta all'impulso: con $I(s)=1$ l'uscita è proprio $G(s)$."]),
-    ] },
-
-    { t: "sez", testo: "2 · Perché il secondo ordine è importante" },
+    { t: "sez", testo: "13 · H2 · Perché il secondo ordine è importante" },
     { t: "due", sx: [
       { t: "p", testo: "Quasi tutti i sistemi reali <b>oscillano</b>, anche quelli che sembrano rigidi (un ponte, un palazzo). Le oscillazioni nascono quando ci sono <b>due componenti che accumulano energia</b> e se la passano a vicenda: un componente prende energia dall'altro, poi la restituisce, e così via." },
       { t: "p", testo: "L'<b>ordine</b> del sistema è il numero di accumulatori di energia indipendenti: con due, il sistema è del secondo ordine. I sistemi del secondo ordine descrivono la grande maggioranza dei sistemi reali." },
@@ -45,7 +31,7 @@ module.exports = {
       ] },
     ] },
 
-    { t: "sez", testo: "3 · I due numeri che contano: $\\xi$ e $\\omega_n$" },
+    { t: "sez", testo: "14 · H2 · I due numeri che contano: $\\xi$ e $\\omega_n$" },
     { t: "due", sx: [
       { t: "tab", intest: ["simbolo", "nome", "che cosa dice"], larghezze: ["19%", "28%", "53%"], righe: [
         ["$\\xi$ (csi)", "<b>smorzamento</b>", "quanto le oscillazioni vengono frenate dalle \"resistenze\" del sistema"],
@@ -56,7 +42,7 @@ module.exports = {
       facile(["Gli <b>ammortizzatori</b> dell'auto: $\\xi$ è quanto sono duri. Scarichi ($\\xi$ piccolo): dopo una buca l'auto saltella a lungo. Troppo duri ($\\xi$ grande): niente saltelli, ma l'auto torna a posto lentamente. $\\omega_n$ è il ritmo dei saltelli."]),
     ] },
 
-    { t: "sez", testo: "4 · La forma generale e come leggerci $\\omega_n$, $\\xi$, $K$" },
+    { t: "sez", testo: "15 · H2 · La forma generale e come leggerci $\\omega_n$, $\\xi$, $K$" },
     { t: "due", sx: [
       { t: "box", tipo: "memo", titolo: "Forma generale", righe: [
         "$$G(s)=K\\,\\frac{\\omega_n^2}{s^2+2\\xi\\omega_n\\,s+\\omega_n^2}$$",
@@ -85,7 +71,7 @@ module.exports = {
       ] },
     ] },
 
-    { t: "sez", testo: "5 · Il circuito RLC (esempio 4 del libro)" },
+    { t: "sez", testo: "16 · H2 · Il circuito RLC (esempio 4 del libro)" },
     { t: "due", sx: [
       { t: "p", testo: img("rlc", 26) },
       { t: "box", tipo: "passi", titolo: "Passaggi", righe: [
@@ -107,7 +93,7 @@ module.exports = {
     ] },
 
     { t: "salto" },
-    { t: "sez", testo: "6 · I poli e i tre casi" },
+    { t: "sez", testo: "17 · H2 · I poli e i tre casi" },
     { t: "due", sx: [
       { t: "box", tipo: "memo", titolo: "Poli", righe: [
         "$$p_{1,2}=-\\xi\\omega_n\\pm\\sqrt{\\xi^2\\omega_n^2-\\omega_n^2}$$",
@@ -125,7 +111,7 @@ module.exports = {
       ["$\\xi<0$", "parte reale positiva", "oscillazioni sempre più grandi", "<b>divergente</b>, instabile"],
     ] },
 
-    { t: "sez", testo: "7 · Risposta all'impulso" },
+    { t: "sez", testo: "18 · H2 · Risposta all'impulso" },
     { t: "due", sx: [
       { t: "p", testo: "Con l'impulso $I(s)=1$, quindi $U(s)=1\\cdot G(s)=G(s)$. Per tornare nel tempo il libro scompone in <b>fratti semplici</b>, $U(s)=\\frac{A}{s-p_1}+\\frac{B}{s-p_2}$, e antitrasforma (qui con $K=1$)." },
       { t: "box", tipo: "memo", titolo: "I tre casi", righe: [
@@ -144,7 +130,7 @@ module.exports = {
       facile(["La sinusoide è la campana che suona; l'esponenziale $e^{-\\xi\\omega_n t}$ è il suono che si spegne. Più $\\xi$ è grande, prima si spegne."]),
     ] },
 
-    { t: "sez", testo: "8 · Risposta al gradino unitario" },
+    { t: "sez", testo: "19 · H2 · Risposta al gradino unitario" },
     { t: "due", sx: [
       { t: "p", testo: img("risposte", 52) },
       { t: "p", testo: "La forma è la stessa dell'impulso, ma alla fine l'uscita <b>non torna a 0</b>: si ferma all'ampiezza del gradino (per $K$). Più $\\xi$ è piccolo, più la risposta è <b>pronta</b> ma <b>oscilla</b>; sopra 1 non oscilla ma è lenta (la curva rossa, $\\xi=0{,}707$, è un buon compromesso)." },
@@ -156,7 +142,7 @@ module.exports = {
       "$$u(t)=1-\\frac{1}{\\sqrt{1-\\xi^2}}\\,e^{-\\xi\\omega_n t}\\,\\sin\\left(\\omega_n\\sqrt{1-\\xi^2}\\,t+\\arctan\\frac{\\sqrt{1-\\xi^2}}{\\xi}\\right)$$",
     ] },
 
-    { t: "sez", testo: "9 · Le specifiche della risposta al gradino" },
+    { t: "sez", testo: "20 · H2 · Le specifiche della risposta al gradino" },
     { t: "due", sx: [
       { t: "p", testo: img("specifiche", 56) },
     ], dx: [
@@ -187,7 +173,7 @@ module.exports = {
       ] },
     ] },
 
-    { t: "sez", testo: "10 · Esercizi del libro (Unità H2, esercitazioni)" },
+    { t: "sez", testo: "21 · H2 · Esercizi del libro (Unità H2, esercitazioni)" },
     { t: "p", testo: "Gli esercizi alla fine dell'unità, svolti. Prova prima da solo coprendo la soluzione." },
     { t: "due", sx: [
       { t: "box", titolo: "Es. 1: poli, $\\omega_n$ e $\\xi$ di $\\frac{s+2}{s^3+2s^2+5s}$", righe: [
@@ -217,21 +203,29 @@ module.exports = {
       ] },
     ] },
 
-    { t: "sez", testo: "11 · Domande tipiche" },
+    { t: "sez", testo: "22 · Domande tipiche" },
     { t: "tab", intest: ["domanda", "dove guardare"], larghezze: ["55%", "45%"], righe: [
-      ["Perché un sistema oscilla? Cosa vuol dire secondo ordine?", "§2: due accumulatori di energia"],
-      ["Cosa sono $\\xi$ e $\\omega_n$?", "§3"],
-      ["Data $G(s)$, trova $\\omega_n$, $\\xi$ e $K$", "§4: metodo in 3 passi (prima $s^2$ con 1)"],
-      ["Trova la f.d.t. di un RLC e i suoi parametri", "§5"],
-      ["Come sono i poli al variare di $\\xi$?", "§6: tabella dei casi"],
-      ["Disegna la risposta all'impulso / al gradino", "§7 e §8"],
-      ["Definisci $T_D$, $T_R$, $T_P$, $T_S$, sovraelongazione", "§9"],
-      ["Calcola $T_P$, $T_S$ e $M_{max}\\%$", "§9: formule ed esempio"],
-      ["Quando il sistema è instabile?", "§6: $\\xi<0$, poli con parte reale positiva"],
-      ["Esercizi del libro con le soluzioni", "§10"],
+      ["Cos'è la trasformata di Laplace e perché si usa?", "§1: definizione e percorso indiretto"],
+      ["Trasformate dei segnali tipici (gradino, rampa, impulso, seno)", "§2: tabella minima"],
+      ["Enuncia un teorema (traslazione, derivata, valore finale…)", "§3"],
+      ["Ricava una trasformata nuova dai teoremi", "§4"],
+      ["Risolvi un'equazione differenziale con Laplace", "§5: circuito RC"],
+      ["Antitrasforma con i fratti semplici (sistema o residui)", "§6 e §7"],
+      ["Cos'è la funzione di trasferimento? Come si calcola?", "§8: impedenze $R$, $\\frac1{sC}$, $sL$"],
+      ["Poli, zeri, forma poli-zeri e forma costanti di tempo", "§9"],
+      ["Come si calcola la risposta di un sistema?", "§10: quattro passi"],
+      ["Serbatoio, piscina, raffreddamento: cosa c'entrano con l'RC?", "§11: analogie e significato di $\\tau$"],
+      ["Perché un sistema oscilla? Cosa vuol dire secondo ordine?", "§13: due accumulatori di energia"],
+      ["Cosa sono $\\xi$ e $\\omega_n$?", "§14"],
+      ["Data $G(s)$, trova $\\omega_n$, $\\xi$ e $K$", "§15: metodo in 3 passi (prima $s^2$ con 1)"],
+      ["Trova la f.d.t. di un RLC e i suoi parametri", "§16"],
+      ["Come sono i poli al variare di $\\xi$? Quando è instabile?", "§17: tabella dei casi ($\\xi<0$ instabile)"],
+      ["Disegna la risposta all'impulso / al gradino", "§18 e §19"],
+      ["Definisci e calcola $T_D$, $T_R$, $T_P$, $T_S$, sovraelongazione", "§20: definizioni, formule ed esempio"],
+      ["Esercizi del libro con le soluzioni", "§12 (H1) e §21 (H2)"],
     ] },
 
-    { t: "sez", testo: "12 · Correzioni agli appunti e al libro" },
-    { t: "p", testo: "• <b>Quaderno 12/11, pagina 4</b>: accanto alla curva sottosmorzata c'è \"più instabile ma pronto\". Con $0<\\xi<1$ il sistema è <b>stabile</b> (la risposta si assesta): oscilla di più ed è meno smorzato, ma non è instabile. Instabile è solo con $\\xi<0$.<br>• <b>Libro</b>: dice che $T_S$ si misura con la fascia del 2% o del 5%, ma $T_S=\\frac{3}{\\xi\\omega_n}$ vale per il 5% (l'esponenziale scende al 5% dopo $\\frac{\\ln 20}{\\xi\\omega_n}\\approx\\frac{3}{\\xi\\omega_n}$); per il 2% serve circa $\\frac{4}{\\xi\\omega_n}$.<br>• <b>Libro</b>: \"la risposta allo scalino presenta esattamente le stesse caratteristiche della risposta all'impulso\" va preso con le pinze: il tipo di comportamento (smorzato o oscillante) dipende da $\\xi$ allo stesso modo, ma le curve sono diverse (il gradino sale e si ferma al valore finale, l'impulso torna a 0).<br>• <b>Libro, metodo per $\\omega_n$, $\\xi$, $K$</b>: funziona solo se il coefficiente di $s^2$ è 1; nell'esempio RLC il libro infatti divide prima per $LC$." },
+    { t: "sez", testo: "23 · Correzioni agli appunti e al libro" },
+    { t: "p", testo: "• <b>Quaderno 12/11, pagina 4</b>: accanto alla curva sottosmorzata c'è \"più instabile ma pronto\". Con $0<\\xi<1$ il sistema è <b>stabile</b> (la risposta si assesta): oscilla di più ed è meno smorzato, ma non è instabile. Instabile è solo con $\\xi<0$.<br>• <b>Libro</b>: dice che $T_S$ si misura con la fascia del 2% o del 5%, ma $T_S=\\frac{3}{\\xi\\omega_n}$ vale per il 5% (l'esponenziale scende al 5% dopo $\\frac{\\ln 20}{\\xi\\omega_n}\\approx\\frac{3}{\\xi\\omega_n}$); per il 2% serve circa $\\frac{4}{\\xi\\omega_n}$.<br>• <b>Libro</b>: \"la risposta allo scalino presenta esattamente le stesse caratteristiche della risposta all'impulso\" va preso con le pinze: il tipo di comportamento (smorzato o oscillante) dipende da $\\xi$ allo stesso modo, ma le curve sono diverse (il gradino sale e si ferma al valore finale, l'impulso torna a 0).<br>• <b>Libro, metodo per $\\omega_n$, $\\xi$, $K$</b>: funziona solo se il coefficiente di $s^2$ è 1; nell'esempio RLC il libro infatti divide prima per $LC$.<br>• <b>Libro, H1, esempio 1 (p. 450)</b>: scrive $I_R=\\frac{V_R}{R}=V_i\\,\\frac{s\\frac LR}{2s\\frac LR+1}$, ma quello è $V_R$, non $I_R$: manca il fattore $\\frac1R$. Giusto: $G=\\frac{I_R}{V_i}=\\frac1R\\cdot\\frac{s\\frac LR}{2s\\frac LR+1}$ (una corrente diviso una tensione si misura in siemens, non è un numero puro).<br>• <b>Libro, G2, scheda di p. 439</b>: accanto a $B_1$ c'è scritto \"$s=0$\" invece di $s=-2$; il risultato 0,125 è giusto.<br>• <b>Manca H3</b> (schemi a blocchi): le pagine dalla 498 non sono ancora state catturate dal libro." },
   ],
 };

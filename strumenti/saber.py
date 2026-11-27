@@ -36,7 +36,12 @@ BACKUP_DIR = Path(os.environ.get("SABER_BACKUP_DIR", HOME / "Documenti/Backup"))
 ELENCO = Path(os.environ.get("SABER_ELENCO", REPO / "saber.tsv"))
 SABER_CMD = os.environ.get("SABER_CMD", "/usr/lib/saber/saber")
 PDF2SABER = Path(os.environ.get("PDF2SABER", HOME / ".claude/skills/note-saber/pdf2saber.py"))
-ATTESA_SYNC = float(os.environ.get("SABER_ATTESA", "15"))  # la sync dura pochi secondi
+ATTESA_SYNC = float(os.environ.get("SABER_ATTESA", "15"))  # attesa minima dopo l'apertura
+# Poi si aspetta che Saber smetta di scrivere dati (upload compresi) per QUIETE secondi: con 13 pagine
+# di immagini la sync è durata circa 45 s, e chiuderlo dopo 15 s fissi la interrompeva (2026-11-27).
+QUIETE = float(os.environ.get("SABER_QUIETE", "10"))
+ATTESA_MAX = float(os.environ.get("SABER_ATTESA_MAX", "600"))
+CONTROLLO = 1.0  # secondi tra due letture di /proc/<pid>/io
 ATTESA_CHIUSURA = 10
 INTESTAZIONE = "pdf\tnota\tsha256"
 
@@ -160,11 +165,40 @@ def saber_aperto():
     return subprocess.run(["pgrep", "-x", Path(SABER_CMD).name[:15]], capture_output=True).returncode == 0
 
 
-def sync():
-    """Apre Saber, aspetta la sync e lo chiude."""
-    subprocess.Popen([SABER_CMD], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, start_new_session=True)
+def byte_scritti(pid):
+    """Byte scritti finora dal processo (file e socket): crescono finché la sync carica."""
+    for riga in Path(f"/proc/{pid}/io").read_text().splitlines():
+        if riga.startswith("wchar:"):
+            return int(riga.split()[1])
+    raise Errore(f"/proc/{pid}/io senza wchar")
+
+
+def aspetta_quiete(processo):
+    """Aspetta che il processo non scriva più nulla per QUIETE secondi, al massimo ATTESA_MAX."""
+    inizio = time.monotonic()
     time.sleep(ATTESA_SYNC)
+    ultimo, fermo_da = byte_scritti(processo.pid), time.monotonic()
+    while time.monotonic() - fermo_da < QUIETE:
+        if processo.poll() is not None:
+            raise Errore("Saber si è chiuso da solo durante la sync")
+        if time.monotonic() - inizio > ATTESA_MAX:
+            raise Errore(f"la sync dura più di {ATTESA_MAX:.0f} s: Saber resta aperto, rilancia quando ha finito")
+        time.sleep(CONTROLLO)
+        adesso = byte_scritti(processo.pid)
+        if adesso != ultimo:
+            ultimo, fermo_da = adesso, time.monotonic()
+
+
+def sync():
+    """Apre Saber, aspetta che la sync finisca e lo chiude."""
+    processo = subprocess.Popen([SABER_CMD], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
+                                start_new_session=True)
+    aspetta_quiete(processo)
     subprocess.run(["pkill", "-x", Path(SABER_CMD).name[:15]], capture_output=True)
+    try:
+        processo.wait(timeout=ATTESA_CHIUSURA)  # lo raccoglie, se no resta zombie e pgrep lo vede ancora
+    except subprocess.TimeoutExpired as errore:
+        raise Errore("Saber non si è chiuso") from errore
     fine = time.monotonic() + ATTESA_CHIUSURA
     while saber_aperto():
         if time.monotonic() > fine:
